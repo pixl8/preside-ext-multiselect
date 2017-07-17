@@ -52,7 +52,7 @@
 		showHideOption( selectedParent, filterChild, ajaxUrl );
 	}
 
-	$( ".contents" ).on( "change", ".select-filter-by", function() {
+	$( "body" ).on( "change", ".select-filter-by", function() {
 		processFilterByFields( $( this ) );
 	});
 
