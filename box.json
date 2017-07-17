@@ -1,0 +1,24 @@
+{
+    "name":"PresideCMS Extension: MultiSelect Form Control for Preside applications",
+    "type":"preside-extensions",
+    "version":"1.0.0",
+    "location":"https://github.com/pixl8/preside-ext-multiselect/archive/v1.0.0.zip",
+    "author":"Pixl8 Interactive",
+    "directory":"application/extensions",
+    "homepage":"https://github.com/pixl8/preside-ext-multiselect",
+    "documentation":"https://github.com/pixl8/preside-ext-multiselect/wiki",
+    "repository":{
+        "type":"git",
+        "URL":"https://github.com/pixl8/preside-ext-multiselect"
+    },
+    "bugs":"https://github.com/pixl8/preside-ext-multiselect/issues",
+    "slug":"preside-ext-multiselect",
+    "projectURL":"https://github.com/pixl8/preside-ext-multiselect",
+    "ignore":[
+        ".git/*",
+        ".gitignore",
+        ".travis.yml",
+        ".twgit_features_subject",
+        "*.sh"
+    ]
+}
