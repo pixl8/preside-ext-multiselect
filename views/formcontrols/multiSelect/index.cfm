@@ -23,7 +23,6 @@
 	}
 </cfscript>
 
-
 <cfoutput>
 	<select id="#inputId#" name="#inputName#" class="#Trim( ListAppend( 'form-control custom-select',extraClass, ' ' ) )#" tabindex="#getNextTabIndex()#" data-placeholder="#placeholder#" <cfif Len( filterChildId )>
 		data-filter-child-id="#filterChildId#"
@@ -40,9 +39,7 @@
 			<cfset isSelectedValue = ListFindNoCase( value, selectValue ) />
 			<option value="#HtmlEditFormat( selectValue )#"
 				<cfif isSelectedValue || (!len(value) && labels[i]==defaultLabel ) > selected="selected"</cfif>
-			>
-				#HtmlEditFormat( translateResource( labels[i] ?: "", labels[i] ?: "" ) )#
-			</option>
+			>#HtmlEditFormat( translateResource( labels[i] ?: "", labels[i] ?: "" ) )#</option>
 		</cfloop>
 	</select>
 </cfoutput>
