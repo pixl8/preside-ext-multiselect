@@ -13,6 +13,7 @@
 	filterBy           = args.filterBy         ?: "";
 	object             = args.object           ?: "";
 	objectFilters      = args.objectFilters    ?: "";
+	multiple           = args.multiple         ?: true;
 	
 	if ( IsSimpleValue( values ) ) { values = ListToArray( values ); }
 	if ( IsSimpleValue( labels ) ) { labels = ListToArray( labels ); }
@@ -34,7 +35,9 @@
 		data-object="#object#"
 	</cfif> <cfif Len( objectFilters )>
 		data-object-filters="#objectFilters#"
-	</cfif> multiple>
+	</cfif><cfif multiple>
+		 multiple
+	</cfif>>
 		<cfloop array="#values#" index="i" item="selectValue">
 			<cfset isSelectedValue = ListFindNoCase( value, selectValue ) />
 			<option value="#HtmlEditFormat( selectValue )#"
