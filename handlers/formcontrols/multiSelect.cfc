@@ -53,7 +53,7 @@ component {
 				i++;
 				if ( structKeyExists( rc, key ) ) {
 					if ( ListLen( filterByField[ i ], "." ) > 1 ) {
-					    filter[ filterByField ] = ListToArray( rc[ key ] );
+					    filter[ filterByField[ i ] ] = ListToArray( rc[ key ] );
 					} else {
 						filter[ "#rc.targetObject#.#filterByField[ i ]#" ] = ListToArray( rc[ key ] );
 					}
