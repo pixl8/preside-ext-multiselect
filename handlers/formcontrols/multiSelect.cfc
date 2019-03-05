@@ -35,19 +35,20 @@ component {
 		if ( includeChosenJs ) {
 			event.include( "ext-custom-chosen" );
 		}
-		
+
 		return renderView( view="formcontrols/multiSelect/index", args=args );
 	}
 
 	public void function refreshChildOptions( event, rc, prc, args={} ) {
 		var filterBy      = rc.filterBy      ?: "";
-        var filterByField = rc.filterByField ?: filterBy;
-        filterBy          = listToArray( filterBy );
-        filterByField     = listToArray( filterByField );
+		var filterByField = rc.filterByField ?: filterBy;
+		var orderBy       = rc.orderBy       ?: "label";
+		filterBy          = listToArray( filterBy );
+		filterByField     = listToArray( filterByField );
 
-        var filter = {};
+		var filter = {};
 		var i      = 0;
-		
+
 		if ( Len( rc.targetObject ?: "" ) ) {
 			for( var key in filterBy ) {
 				i++;
@@ -63,11 +64,11 @@ component {
 		 	var records = presideObjectService.selectData(
 				  objectName   = rc.targetObject
 				, selectFields = [ "id", "${labelfield} as label" ]
-				, orderby      = "label"
+				, orderby      = orderBy
 				, filter       = filter
 				, savedFilters = ListToArray( rc.dbFilters ?: "" )
 			);
-			
+
 		}
 		event.renderData( data= QueryToArray( qry=records, columns=records.getColumnList( false ) ), type="JSON" );
 	}

@@ -14,10 +14,11 @@
 	object             = args.object           ?: "";
 	objectFilters      = args.objectFilters    ?: "";
 	multiple           = args.multiple         ?: true;
-	
+	orderBy            = args.orderBy          ?: "label";
+
 	if ( IsSimpleValue( values ) ) { values = ListToArray( values ); }
 	if ( IsSimpleValue( labels ) ) { labels = ListToArray( labels ); }
-	
+
 	value = Trim( event.getValue( name=inputName, defaultValue=defaultValue ) );
 	if ( not IsSimpleValue( value ) ) {
 		value = "";
@@ -37,7 +38,9 @@
 		data-object-filters="#objectFilters#"
 	</cfif><cfif multiple>
 		 multiple
-	</cfif>>
+	</cfif> <cfif Len( orderBy )>
+		data-order-by="#orderBy#"
+	</cfif> >
 		<cfloop array="#values#" index="i" item="selectValue">
 			<cfset isSelectedValue = ListFindNoCase( value, selectValue ) />
 			<option value="#HtmlEditFormat( selectValue )#"

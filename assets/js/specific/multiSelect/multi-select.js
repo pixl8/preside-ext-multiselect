@@ -1,10 +1,10 @@
 ( function( $ ){
 	var showHideOption = function( selectedParent, filterChild, ajaxUrl ){
-		
+
 		if ( selectedParent && $.isArray( selectedParent ) ) {
 			selectedParent = selectedParent.join( "," );
 		}
-		
+
 		$.each( filterChild, function( index, value ) {
 			var $selectChild       = $( "#"+value );
 			var selectedChildValue = $selectChild.val();
@@ -20,6 +20,7 @@
 			data[ 'filterBy'     ] = $selectChild.data( 'filter-by' );
 			data[ 'targetObject' ] = $selectChild.data( 'object' );
 			data[ 'dbFilters'    ] = $selectChild.data( 'object-filters' );
+			data[ 'orderBy'      ] = $selectChild.data( 'order-by' );
 
 			$.ajax({
 				type: 'POST',
@@ -27,7 +28,7 @@
 				data: data,
 				dataType: 'json',
 				success: function (data) {
-					
+
 					$selectChild.empty();
 					for (var i = 0; i < data.length; i++) {
 						if ( selectedChildValue && $.inArray( String(data[i].id), selectedChildValue ) > -1 ) {
@@ -35,12 +36,12 @@
 						} else {
 							$selectChild.append('<option value=' + data[i].id + '>' + data[i].label + '</option>');
 						}
-						
+
 					}
 					$selectChild.trigger("chosen:updated");
 				}
 			});
-			
+
 		} );
 	}
 
@@ -62,6 +63,6 @@
 		$filterBy.each( function() {
 			processFilterByFields( $( this ) );
 		} );
-		
+
 	});
 } )( jQuery );
