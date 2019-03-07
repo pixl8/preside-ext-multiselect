@@ -37,8 +37,7 @@ component {
 		if ( args.multiple ) {
 			var sourceObject  = args.sourceObject ?: "";
 			var sourceIdField = presideObjectService.getIdField( sourceObject );
-			args.object       = args.relatedTo ?: "";
-			var targetIdField = presideObjectService.getIdField( args.object );
+			var targetIdField = presideObjectService.getIdField( args.relatedTo ?: "" );
 
 			if (  Len( Trim( args.savedData[ sourceIdField ] ?: "" ) ) ) {
 				var useVersioning = Val( rc.version ?: "" ) && presideObjectService.objectIsVersioned( sourceObject );
