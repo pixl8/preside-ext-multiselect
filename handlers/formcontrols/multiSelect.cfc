@@ -30,6 +30,32 @@ component {
 			args.labels = ValueArray( args.records.label );
 		}
 
+
+
+		args.multiple = args.multiple ?: true;
+
+		if ( args.multiple ) {
+			var sourceObject  = args.sourceObject ?: "";
+			var sourceIdField = presideObjectService.getIdField( sourceObject );
+			var targetIdField = presideObjectService.getIdField( args.relatedTo ?: "" );
+
+			if (  Len( Trim( args.savedData[ sourceIdField ] ?: "" ) ) ) {
+				var useVersioning = Val( rc.version ?: "" ) && presideObjectService.objectIsVersioned( sourceObject );
+
+				args.savedValue = presideObjectService.selectManyToManyData(
+					  objectName       = sourceObject
+					, propertyName     = args.name
+					, id               = args.savedData[ sourceIdField ]
+					, selectFields     = [ "#args.name#.#targetIdField# as id" ]
+					, useCache         = false
+					, fromVersionTable = useVersioning
+					, specificVersion  = Val( rc.version ?: "" )
+				);
+
+				args.defaultValue = args.savedValue = ValueList( args.savedValue.id );
+			}
+		}
+
 		event.include( "ext-multi-select" );
 
 		if ( includeChosenJs ) {
