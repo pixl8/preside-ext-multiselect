@@ -1,7 +1,7 @@
 {
     "name":"PresideCMS Extension: MultiSelect Form Control for Preside applications",
     "type":"preside-extensions",
-    "version":"1.0.10",
+    "version":"1.0.12",
     "location":"https://github.com/pixl8/preside-ext-multiselect/archive/v1.0.8.zip",
     "author":"Pixl8 Interactive",
     "directory":"application/extensions",

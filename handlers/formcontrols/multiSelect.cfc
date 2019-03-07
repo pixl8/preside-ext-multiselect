@@ -30,8 +30,6 @@ component {
 			args.labels = ValueArray( args.records.label );
 		}
 
-
-
 		args.multiple = args.multiple ?: true;
 
 		if ( args.multiple ) {
