@@ -35,11 +35,11 @@ component {
 		var sourceIdField = presideObjectService.getIdField( sourceObject );
 
 		args.object   = args.relatedTo ?: "";
-		args.multiple = true;
+		args.multiple = args.multiple ?: true;
 
 		var targetIdField = presideObjectService.getIdField( args.object );
 
-		if ( Len( Trim( args.savedData[ sourceIdField ] ?: "" ) ) ) {
+		if ( args.multiple && Len( Trim( args.savedData[ sourceIdField ] ?: "" ) ) ) {
 			var useVersioning = Val( rc.version ?: "" ) && presideObjectService.objectIsVersioned( sourceObject );
 
 			args.savedValue = presideObjectService.selectManyToManyData(
