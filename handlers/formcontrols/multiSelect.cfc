@@ -32,10 +32,10 @@ component {
 
 		args.multiple = args.multiple ?: true;
 
-		if ( args.multiple ) {
-			var sourceObject  = args.sourceObject ?: "";
+		if ( args.multiple && Len( args.sourceObject ?: "" ) && Len( args.relatedTo ?: "" ) ) {
+			var sourceObject  = args.sourceObject;
 			var sourceIdField = presideObjectService.getIdField( sourceObject );
-			var targetIdField = presideObjectService.getIdField( args.relatedTo ?: "" );
+			var targetIdField = presideObjectService.getIdField( args.relatedTo );
 
 			if (  Len( Trim( args.savedData[ sourceIdField ] ?: "" ) ) ) {
 				var useVersioning = Val( rc.version ?: "" ) && presideObjectService.objectIsVersioned( sourceObject );
