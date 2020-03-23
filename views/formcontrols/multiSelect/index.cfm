@@ -15,6 +15,7 @@
 	objectFilters      = args.objectFilters    ?: "";
 	multiple           = args.multiple         ?: true;
 	orderBy            = args.orderBy          ?: "label";
+	allowDeselect      = args.allowDeselect    ?: false;
 
 	if ( IsSimpleValue( values ) ) { values = ListToArray( values ); }
 	if ( IsSimpleValue( labels ) ) { labels = ListToArray( labels ); }
@@ -40,9 +41,12 @@
 		 multiple
 	</cfif> <cfif Len( orderBy )>
 		data-order-by="#orderBy#"
+	</cfif> <cfif isTrue( allowDeselect )>
+		data-deselect="true"
 	</cfif> >
 		<cfloop array="#values#" index="i" item="selectValue">
 			<cfset isSelectedValue = ListFindNoCase( value, selectValue ) />
+			<cfif isTrue( allowDeselect )><option value=""></option></cfif>
 			<option value="#HtmlEditFormat( selectValue )#"
 				<cfif isSelectedValue || (!len(value) && labels[i]==defaultLabel ) > selected="selected"</cfif>
 			>#HtmlEditFormat( translateResource( labels[i] ?: "", labels[i] ?: "" ) )#</option>
