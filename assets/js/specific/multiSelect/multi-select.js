@@ -1,4 +1,13 @@
-( function( $ ){
+var pixl8MultiSelect = function() {
+
+	var processFilterByFields = function( $filterParent ) {
+		var selectedParent = $filterParent.val();
+		var filterChild    = $filterParent.data( "filter-child-id" ).split( "," );
+		var ajaxUrl        = $filterParent.data( "ajax-url" );
+
+		showHideOption( selectedParent, filterChild, ajaxUrl );
+	};
+
 	var showHideOption = function( selectedParent, filterChild, ajaxUrl ){
 
 		if ( selectedParent && $.isArray( selectedParent ) ) {
@@ -45,24 +54,42 @@
 		} );
 	}
 
-	var processFilterByFields = function( $filterParent ) {
-		var selectedParent = $filterParent.val();
-		var filterChild    = $filterParent.data( "filter-child-id" ).split( "," );
-		var ajaxUrl        = $filterParent.data( "ajax-url" );
+	return {
 
-		showHideOption( selectedParent, filterChild, ajaxUrl );
-	}
+		/*
+			Public functions, can be accessed from js/specific/ scripts
+			pixl8MultiSelect.fn.updateChildSelect = function() {};
+		*/
+		  fn: {
+			updateChildSelect: function( selectedParent, filterChild, ajaxUrl ) {
+				showHideOption( selectedParent, filterChild, ajaxUrl );
+			}
+		} /* End general public functions */
 
-	$( "body" ).on( "change", ".select-filter-by", function() {
-		processFilterByFields( $( this ) );
-	});
+		/* Initiate handlers */
+		, init: function() {
+
+			$( "body" ).on( "change", ".select-filter-by", function() {
+				processFilterByFields( $( this ) );
+			});
+
+			$( ".select-filter-by" ).each( function() {
+				processFilterByFields( $( this ) );
+			} );
+
+			return this;
+
+		} /* End initiate handlers */
+
+	};
+}();
+
+( function( $ ) {
 
 	$( document ).ready( function() {
-		var $filterBy = $( ".select-filter-by" );
 
-		$filterBy.each( function() {
-			processFilterByFields( $( this ) );
-		} );
+		pixl8MultiSelect.init();
 
-	});
+	} );
+
 } )( jQuery );
