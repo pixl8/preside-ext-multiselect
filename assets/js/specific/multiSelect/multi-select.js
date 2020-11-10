@@ -1,4 +1,4 @@
-var pixl8MultiSelect = function() {
+var pixl8presideExtMultiselect = function() {
 
 	var processFilterByFields = function( $filterParent ) {
 		var selectedParent = $filterParent.val();
@@ -57,16 +57,15 @@ var pixl8MultiSelect = function() {
 	return {
 
 		/*
-			Public functions, can be accessed from js/specific/ scripts
-			pixl8MultiSelect.fn.updateChildSelect = function() {};
+			Public function, can be accessed from js/specific/ scripts
+			pixl8presideExtMultiselect.fn.updateChildSelect = function() {};
 		*/
-		  fn: {
+		fn: {
 			updateChildSelect: function( selectedParent, filterChild, ajaxUrl ) {
 				showHideOption( selectedParent, filterChild, ajaxUrl );
 			}
-		} /* End general public functions */
+		} /* End general public function */
 
-		/* Initiate handlers */
 		, init: function() {
 
 			$( "body" ).on( "change", ".select-filter-by", function() {
@@ -79,7 +78,7 @@ var pixl8MultiSelect = function() {
 
 			return this;
 
-		} /* End initiate handlers */
+		}
 
 	};
 }();
@@ -88,7 +87,7 @@ var pixl8MultiSelect = function() {
 
 	$( document ).ready( function() {
 
-		pixl8MultiSelect.init();
+		pixl8presideExtMultiselect.init();
 
 	} );
 
