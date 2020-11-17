@@ -6,6 +6,7 @@ component {
 		var object       = args.object        ?: "";
 		var labelField   = args.labelField    ?: "label";
 		var savedFilters = args.objectFilters ?: "";
+		var defaultEmptyList = args.defaultEmptyList ?: false;
 		var orderBy      = args.orderBy       ?: 'label';
 		var valueField   = args.valueField    ?: '';
 		var selectFields = [ "id",labelField & " as label" ];
@@ -14,7 +15,7 @@ component {
 			arrayAppend( selectFields, valueField );
 		}
 
-		if ( object.len() ) {
+		if ( object.len() && !defaultEmptyList ) {
 			args.records = presideObjectService.selectData(
 				  objectName   = object
 				, selectFields = selectFields
