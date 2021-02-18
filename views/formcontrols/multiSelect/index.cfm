@@ -25,8 +25,15 @@
 	if ( not IsSimpleValue( value ) ) {
 		value = "";
 	}
+
+	indexOrder = "";
 	if( isTrue( sortable ) ) {
 		extraClass &= " chosen-sortable "
+		if( !isEmptyString( value ) ) {
+			for( var selected in listToArray( value ) ) {
+				indexOrder = listAppend( indexOrder, arrayFind( values, selected ) );
+			}
+		}
 	}
 </cfscript>
 
@@ -47,6 +54,8 @@
 		data-order-by="#orderBy#"
 	</cfif> <cfif isTrue( allowDeselect )>
 		data-deselect="true"
+	</cfif> <cfif isTrue( sortable )>
+		data-index-order="#indexOrder#"
 	</cfif> >
 		<cfloop array="#values#" index="i" item="selectValue">
 			<cfset isSelectedValue = ListFindNoCase( value, selectValue ) />
