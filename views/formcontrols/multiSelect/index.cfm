@@ -16,6 +16,7 @@
 	multiple           = args.multiple         ?: true;
 	orderBy            = args.orderBy          ?: "label";
 	allowDeselect      = args.allowDeselect    ?: false;
+	sortable           = args.sortable         ?: false;
 
 	if ( IsSimpleValue( values ) ) { values = ListToArray( values ); }
 	if ( IsSimpleValue( labels ) ) { labels = ListToArray( labels ); }
@@ -23,6 +24,9 @@
 	value = Trim( event.getValue( name=inputName, defaultValue=defaultValue ) );
 	if ( not IsSimpleValue( value ) ) {
 		value = "";
+	}
+	if( isTrue( sortable ) ) {
+		extraClass &= " chosen-sortable "
 	}
 </cfscript>
 
