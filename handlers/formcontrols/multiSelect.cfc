@@ -32,6 +32,7 @@ component {
 		}
 
 		args.multiple = args.multiple ?: true;
+		args.sortable = args.sortable ?: false;
 
 		if ( args.multiple && Len( args.sourceObject ?: "" ) && Len( args.relatedTo ?: "" ) ) {
 			var sourceObject  = args.sourceObject;
@@ -56,6 +57,9 @@ component {
 		}
 
 		event.include( "ext-multi-select" );
+		if( isTrue( args.sortable ) ) {
+			event.include( "ext-jq-chosen-sortable" );
+		}
 
 		if ( includeChosenJs ) {
 			event.include( "ext-custom-chosen" );

@@ -7,6 +7,10 @@
             var deselect = (typeof $(this).data('deselect') !== 'undefined') ;
 
             $(this).chosen({allow_single_deselect: deselect});
+
+            if( $(this).hasClass( "chosen-sortable" ) ) {
+                $(this).chosenSortable();
+            }
         });
 
         if ($('.chosen-container').length > 0) {
