@@ -15,10 +15,12 @@
 	objectFilters      = args.objectFilters    ?: "";
 	multiple           = args.multiple         ?: true;
 	maxSelected        = args.maxSelected      ?: "";
-	
+	orderBy            = args.orderBy          ?: "label";
+	allowDeselect      = args.allowDeselect    ?: false;
+
 	if ( IsSimpleValue( values ) ) { values = ListToArray( values ); }
 	if ( IsSimpleValue( labels ) ) { labels = ListToArray( labels ); }
-	
+
 	value = Trim( event.getValue( name=inputName, defaultValue=defaultValue ) );
 	if ( not IsSimpleValue( value ) ) {
 		value = "";
@@ -40,8 +42,14 @@
 		 multiple
 		<cfif isNumeric( maxSelected ) AND maxSelected GT 0> data-max-selected="#maxSelected#"</cfif>
 	</cfif>>
+	</cfif> <cfif Len( orderBy )>
+		data-order-by="#orderBy#"
+	</cfif> <cfif isTrue( allowDeselect )>
+		data-deselect="true"
+	</cfif> >
 		<cfloop array="#values#" index="i" item="selectValue">
 			<cfset isSelectedValue = ListFindNoCase( value, selectValue ) />
+			<cfif isTrue( allowDeselect )><option value=""></option></cfif>
 			<option value="#HtmlEditFormat( selectValue )#"
 				<cfif isSelectedValue || (!len(value) && labels[i]==defaultLabel ) > selected="selected"</cfif>
 			>#HtmlEditFormat( translateResource( labels[i] ?: "", labels[i] ?: "" ) )#</option>
