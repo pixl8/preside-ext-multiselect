@@ -14,6 +14,7 @@
 	object             = args.object           ?: "";
 	objectFilters      = args.objectFilters    ?: "";
 	multiple           = args.multiple         ?: true;
+	maxSelected        = args.maxSelected      ?: "";
 	
 	if ( IsSimpleValue( values ) ) { values = ListToArray( values ); }
 	if ( IsSimpleValue( labels ) ) { labels = ListToArray( labels ); }
@@ -37,6 +38,7 @@
 		data-object-filters="#objectFilters#"
 	</cfif><cfif multiple>
 		 multiple
+		<cfif isNumeric( maxSelected ) AND maxSelected GT 0> data-max-selected="#maxSelected#"</cfif>
 	</cfif>>
 		<cfloop array="#values#" index="i" item="selectValue">
 			<cfset isSelectedValue = ListFindNoCase( value, selectValue ) />
