@@ -6,14 +6,7 @@ This extension provides multi select form control with AJAX filtering functional
 
 ## Installation
 
-Install the extension to your application via either of the methods detailed below (Git submodule / CommandBox) and then enable the extension by opening up the Preside developer console and entering:
-
-```
-extension enable preside-ext-multiselect
-reload all
-```
-
-### CommandBox (box.json) method
+_Pre-requisites: Commandbox installed locally._
 
 From the root of your application, type the following command:
 
@@ -21,10 +14,4 @@ From the root of your application, type the following command:
 box install preside-ext-multiselect
 ```
 
-### Git Submodule method
-
-From the root of your application, type the following command:
-
-```
-git submodule add https://github.com/pixl8/preside-ext-multiselect.git application/extensions/preside-ext-multiselect
-```
+Reload your application
