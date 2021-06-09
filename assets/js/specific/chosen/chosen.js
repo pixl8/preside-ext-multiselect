@@ -1,12 +1,13 @@
 ( function( $ ){
     var customChosen = function( $container ) {
-
-
-
         $('.custom-select', $container ).each(function() {
-            var deselect = (typeof $(this).data('deselect') !== 'undefined') ;
-
-            $(this).chosen({allow_single_deselect: deselect});
+            var deselect     = ( typeof $(this).data('deselect') !== 'undefined' );
+            var chosenConfig = { allow_single_deselect: deselect };
+            var maxSelected  = $( this ).data( "max-selected" );
+            if ( $.isNumeric( maxSelected ) ) {
+                chosenConfig[ "max_selected_options" ] = maxSelected;
+            }
+            $(this).chosen( chosenConfig );
 
             if( $(this).hasClass( "chosen-sortable" ) ) {
                 $(this).chosenSortable();

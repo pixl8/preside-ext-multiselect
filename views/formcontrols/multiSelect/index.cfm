@@ -14,6 +14,7 @@
 	object             = args.object           ?: "";
 	objectFilters      = args.objectFilters    ?: "";
 	multiple           = args.multiple         ?: true;
+	maxSelected        = args.maxSelected      ?: "";
 	orderBy            = args.orderBy          ?: "label";
 	allowDeselect      = args.allowDeselect    ?: false;
 	sortable           = args.sortable         ?: false;
@@ -50,6 +51,8 @@
 		data-object-filters="#objectFilters#"
 	</cfif><cfif multiple>
 		 multiple
+		<cfif isNumeric( maxSelected ) AND maxSelected GT 0> data-max-selected="#maxSelected#"</cfif>
+	</cfif>>
 	</cfif> <cfif Len( orderBy )>
 		data-order-by="#orderBy#"
 	</cfif> <cfif isTrue( allowDeselect )>
