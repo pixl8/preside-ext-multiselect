@@ -52,7 +52,6 @@
 	</cfif><cfif multiple>
 		 multiple
 		<cfif isNumeric( maxSelected ) AND maxSelected GT 0> data-max-selected="#maxSelected#"</cfif>
-	</cfif>>
 	</cfif> <cfif Len( orderBy )>
 		data-order-by="#orderBy#"
 	</cfif> <cfif isTrue( allowDeselect )>
