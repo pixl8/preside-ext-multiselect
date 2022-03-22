@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.1.2
+
+* Fix issue with selected child option not updated on front-end
+
 ## v1.1.1
 
 * Fix issue with extraneous markup in multiselct (additional closing tag)

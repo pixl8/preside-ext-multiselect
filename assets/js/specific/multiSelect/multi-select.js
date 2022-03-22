@@ -19,7 +19,7 @@ var pixl8presideExtMultiselect = function() {
 			var selectedChildValue = $selectChild.val();
 
 			if ( selectedChildValue && !$.isArray( selectedChildValue ) ) {
-				selectedChildValue.split( "," );
+				selectedChildValue = selectedChildValue.split( "," );
 			}
 
 			var filterByField = $selectChild.data( 'filter-by' );
