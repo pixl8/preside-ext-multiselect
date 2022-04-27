@@ -1,15 +1,26 @@
 component {
-	property name="presideObjectService" inject="PresideObjectService";
-	property name="includeChosenJs"      inject="coldbox:setting:multiSelect.includeChosenJs";
+	property name="presideObjectService"        inject="PresideObjectService";
+	property name="multiSelectAllowListService" inject="multiSelectAllowListService";
+	property name="includeChosenJs"             inject="coldbox:setting:multiSelect.includeChosenJs";
 
 	public string function index( event, rc, prc, args={} ) {
-		var object       = args.object        ?: "";
-		var labelField   = args.labelField    ?: "label";
-		var savedFilters = args.objectFilters ?: "";
+		var object           = args.object        ?: "";
+		var labelField       = args.labelField    ?: "label";
+		var savedFilters     = args.objectFilters ?: "";
 		var defaultEmptyList = args.defaultEmptyList ?: false;
-		var orderBy      = args.orderBy       ?: 'label';
-		var valueField   = args.valueField    ?: '';
-		var selectFields = [ "id",labelField & " as label" ];
+		var orderBy          = args.orderBy       ?: 'label';
+		var valueField       = args.valueField    ?: '';
+		var filterBy         = args.filterBy      ?: "";
+		var filterByField    = args.filterByField ?: filterBy;
+		var selectFields     = [ "id",labelField & " as label" ];
+
+		multiSelectAllowListService.addToAllowList(
+			  targetObject  = object
+			, filterBy      = filterBy
+			, filterByField = filterByField
+			, orderBy       = orderBy
+			, dbFilters     = savedFilters
+		);
 
 		if( len( valueField ) ) {
 			arrayAppend( selectFields, valueField );
@@ -69,36 +80,48 @@ component {
 	}
 
 	public void function refreshChildOptions( event, rc, prc, args={} ) {
-		var filterBy      = rc.filterBy      ?: "";
-		var filterByField = rc.filterByField ?: filterBy;
-		var orderBy       = rc.orderBy       ?: "label";
-		filterBy          = listToArray( filterBy );
-		filterByField     = listToArray( filterByField );
+		var targetObject   = rc.targetObject  ?: "";
+		var filterBy       = rc.filterBy      ?: "";
+		var filterByField  = rc.filterByField ?: filterBy;
+		var orderBy        = rc.orderBy       ?: "label";
+		var dbFilters      = rc.dbFilters     ?: "";
+		var requestAllowed = multiSelectAllowListService.isParameterCombinationAllowed(
+			  targetObject  = targetObject
+			, filterBy      = filterBy
+			, filterByField = filterByField
+			, orderBy       = orderBy
+			, dbFilters     = dbFilters
+		);
+
+		if ( !requestAllowed || !Len( Trim( targetObject ) ) ) {
+			event.renderData( data=[], type="json", statusCode=403 );
+			return;
+		}
+
+		filterBy      = listToArray( filterBy );
+		filterByField = listToArray( filterByField );
 
 		var filter = {};
 		var i      = 0;
-
-		if ( Len( rc.targetObject ?: "" ) ) {
-			for( var key in filterBy ) {
-				i++;
-				if ( structKeyExists( rc, key ) ) {
-					if ( ListLen( filterByField[ i ], "." ) > 1 ) {
-					    filter[ filterByField[ i ] ] = ListToArray( rc[ key ] );
-					} else {
-						filter[ "#rc.targetObject#.#filterByField[ i ]#" ] = ListToArray( rc[ key ] );
-					}
+		for( var key in filterBy ) {
+			i++;
+			if ( structKeyExists( rc, key ) ) {
+				if ( ListLen( filterByField[ i ], "." ) > 1 ) {
+				    filter[ filterByField[ i ] ] = ListToArray( rc[ key ] );
+				} else {
+					filter[ "#targetObject#.#filterByField[ i ]#" ] = ListToArray( rc[ key ] );
 				}
 			}
-
-		 	var records = presideObjectService.selectData(
-				  objectName   = rc.targetObject
-				, selectFields = [ "id", "${labelfield} as label" ]
-				, orderby      = orderBy
-				, filter       = filter
-				, savedFilters = ListToArray( rc.dbFilters ?: "" )
-			);
-
 		}
-		event.renderData( data= QueryToArray( qry=records, columns=records.getColumnList( false ) ), type="JSON" );
+
+		var records = presideObjectService.selectData(
+			  objectName   = targetObject
+			, selectFields = [ "id", "${labelfield} as label" ]
+			, orderby      = orderBy
+			, filter       = filter
+			, savedFilters = ListToArray( dbFilters )
+		);
+
+		event.renderData( data= QueryToArray( qry=records, columns=records.getColumnList( false ) ), type="json" );
 	}
 }
