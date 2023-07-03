@@ -158,7 +158,7 @@ component {
 	}
 
 	public string function getObjectRecordsForAjaxSelectControl() {
-		if ( !Len( rc.requestUrl ) || !Len( rc.fieldName ) ) {
+		if ( !Len( rc.requestUrl ?: "" ) || !Len( rc.fieldName ?: "" ) ) {
 			return "";
 		}
 		var formControlAttributes = multiSelectFieldAttributeService.getFieldAttributes( requestUrl = rc.requestUrl, fieldName = rc.fieldName );
