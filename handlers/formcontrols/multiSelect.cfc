@@ -20,7 +20,6 @@ component {
 		var fieldName        = args.name ?: "";
 		var maxRows          = args.maxRows ?: 0;
 
-
 		multiSelectAllowListService.addToAllowList(
 			  targetObject  = object
 			, filterBy      = filterBy
@@ -75,7 +74,7 @@ component {
 			}
 		}
 
-		event.include( "ext-multi-select" );
+		event.include( "/js/specific/multiSelect/" );
 		if( isTrue( args.sortable ) ) {
 			event.include( "ext-jq-chosen-sortable" );
 		}
@@ -104,7 +103,7 @@ component {
 				}
 			}
 
-			event.include( "/js/specific/singleSelect/" )
+			event.include( "/js/specific/singleSelectAjax/" )
 				.includeData( { searchTermUrl= event.buildLink( linkTo = "formcontrols.multiselect.getObjectRecordsForAjaxSelectControl" ) } );
 		}
 
@@ -158,7 +157,7 @@ component {
 	}
 
 	public string function getObjectRecordsForAjaxSelectControl() {
-		if ( !Len( rc.requestUrl ) || !Len( rc.fieldName ) ) {
+		if ( !Len( rc.requestUrl ?: "" ) || !Len( rc.fieldName ?: "" ) ) {
 			return "";
 		}
 		var formControlAttributes = multiSelectFieldAttributeService.getFieldAttributes( requestUrl = rc.requestUrl, fieldName = rc.fieldName );

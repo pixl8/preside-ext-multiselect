@@ -1,1 +1,6 @@
 package-lock.json
+/node_modules
+/css/**/*.less.css
+/css/**/*.min.css
+/js/**/*.min.js
+/js/**/*.min.map

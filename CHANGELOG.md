@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.1.4
+* Minify assets
+* Add maxRows settings for single select, with ajax search to update options based on typed keyword
+
 ## v1.1.3
 
 * Create a dynamic allow list for ajax listing requests based on server-side requested form controls
