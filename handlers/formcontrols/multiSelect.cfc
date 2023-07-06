@@ -96,6 +96,10 @@ component {
 				, maxRows       = maxRows
 			);
 
+			if ( Len( rc[ fieldName ] ?: "" ) && ( rc[ fieldName ] != args.defaultValue ) ) {
+				args.defaultValue = rc[ fieldName ];
+			}
+
 			if ( Len( args.defaultValue ) ) {
 				var defaultValues = ListToArray( args.defaultValue );
 
