@@ -2,7 +2,7 @@
 
 ## v1.1.4
 * Minify assets
-* Add maxRows settings for single select, with ajax search to update options based on typed keyword
+* Additional form control support: maxRows, ajaxTextSearch for parent select, load maxRows of option list with type text search to retrieve relevant record options via ajax
 
 ## v1.1.3
 
