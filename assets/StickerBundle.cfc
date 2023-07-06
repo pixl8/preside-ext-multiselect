@@ -29,6 +29,6 @@ component {
 		bundle.asset( "ext-jq-chosen-sortable" ).dependsOn( "ext-jq-chosen-jquery-ui" );
 
 		bundle.asset( "/js/specific/multiSelect/" ).after( "ext-custom-chosen"  );
-		bundle.asset( "/js/specific/singleSelectAjax/" ).after( "/js/specific/multiSelect/" );
+		bundle.asset( "/js/specific/ajaxTextObjectRecSearch/" ).after( "/js/specific/multiSelect/" );
 	}
 }

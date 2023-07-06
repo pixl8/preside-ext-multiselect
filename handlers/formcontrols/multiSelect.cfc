@@ -83,7 +83,7 @@ component {
 			event.include( "ext-custom-chosen" );
 		}
 
-		if ( !args.multiple && Len( object ) && !defaultEmptyList && IsTrue( ajaxSearch ) && maxRows ) {
+		if ( Len( object ) && !defaultEmptyList && IsTrue( ajaxSearch ) && maxRows ) {
 			multiSelectFieldAttributeService.addToSelectFieldAttritbutesCache(
 				  partialUrl    = prc._presideUrlPath ?: ""
 				, fieldName     = fieldName
@@ -97,13 +97,17 @@ component {
 			);
 
 			if ( Len( args.defaultValue ) ) {
-				if ( !ArrayFind( args.values, args.defaultValue ) ) {
-					arrayAppend( args.values, args.defaultValue );
-					ArrayAppend( args.labels, renderLabel( object, args.defaultValue ) );
-				}
+				var defaultValues = ListToArray( args.defaultValue );
+
+				arrayEach( defaultValues, function( item ) {
+					if ( !ArrayFind( args.values, item ) ) {
+						arrayAppend( args.values, item );
+						ArrayAppend( args.labels, renderLabel( object, item ) );
+					}
+				});
 			}
 
-			event.include( "/js/specific/singleSelectAjax/" )
+			event.include( "/js/specific/ajaxTextObjectRecSearch/" )
 				.includeData( { searchTermUrl= event.buildLink( linkTo = "formcontrols.multiselect.getObjectRecordsForAjaxSelectControl" ) } );
 		}
 
