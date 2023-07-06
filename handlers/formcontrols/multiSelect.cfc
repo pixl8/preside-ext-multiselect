@@ -16,9 +16,9 @@ component {
 		var filterByField    = args.filterByField ?: filterBy;
 		var selectFields     = [ "id",labelField & " as label" ];
 
-		var ajaxSearch       = IsTrue( args.ajaxSearch ?: "" );
+		var ajaxSearch       = IsTrue( args.ajaxTextSearch ?: "" );
 		var fieldName        = args.name ?: "";
-		var maxRows          = args.maxRows ?: 0;
+		var maxRows          = ajaxSearch ? ( args.maxRows ?: 0 ) : 0;
 
 		multiSelectAllowListService.addToAllowList(
 			  targetObject  = object
@@ -83,7 +83,7 @@ component {
 			event.include( "ext-custom-chosen" );
 		}
 
-		if ( Len( object ) && !defaultEmptyList && IsTrue( ajaxSearch ) && maxRows ) {
+		if ( Len( object ) && !defaultEmptyList && !Len( args.ajax ?: "" ) && ajaxSearch && maxRows ) {
 			multiSelectFieldAttributeService.addToSelectFieldAttritbutesCache(
 				  partialUrl    = prc._presideUrlPath ?: ""
 				, fieldName     = fieldName

@@ -18,6 +18,7 @@
 	orderBy            = args.orderBy          ?: "label";
 	allowDeselect      = args.allowDeselect    ?: false;
 	sortable           = args.sortable         ?: false;
+	ajaxTextSearch     = args.ajaxTextSearch   ?: false;
 
 	if ( IsSimpleValue( values ) ) { values = ListToArray( values ); }
 	if ( IsSimpleValue( labels ) ) { labels = ListToArray( labels ); }
@@ -58,6 +59,8 @@
 		data-deselect="true"
 	</cfif> <cfif isTrue( sortable )>
 		data-index-order="#indexOrder#"
+	</cfif> <cfif isTrue( ajaxTextSearch )>
+		data-ajax-txt-search="1"
 	</cfif> >
 		<cfloop array="#values#" index="i" item="selectValue">
 			<cfset isSelectedValue = ListFindNoCase( value, selectValue ) />

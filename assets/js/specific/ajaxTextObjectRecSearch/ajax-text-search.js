@@ -3,6 +3,11 @@
 	$( document ).ready( function() {
 
 		$(".chosen-container input").on('keyup',function( e ){
+
+			if ( !$(this).closest( ".chosen-container" ).prev( "select[data-ajax-txt-search='1']" ).length ) {
+				return;
+			}
+
 			var $selectField = $(this).closest( ".chosen-container" ).prev( "select" );
 			var $inputField = $(this);
 
