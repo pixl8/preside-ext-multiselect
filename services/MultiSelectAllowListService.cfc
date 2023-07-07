@@ -18,6 +18,7 @@ component {
 		, string filterByField = ""
 		, string orderBy       = ""
 		, string dbFilters     = ""
+		, numeric maxRows      = 0
 	) {
 		var cacheKey = _getCacheKey( argumentCollection=arguments );
 
@@ -32,6 +33,7 @@ component {
 		, string filterByField = ""
 		, string orderBy       = ""
 		, string dbFilters     = ""
+		, numeric maxRows      = 0
 	) {
 		return variables._allowListCache[ _getCacheKey( argumentCollection=arguments ) ] ?: false;
 	}
@@ -43,8 +45,9 @@ component {
 		, string filterByField = ""
 		, string orderBy       = ""
 		, string dbFilters     = ""
+		, numeric maxRows      = 0
 	) {
-		return "targetObject:#arguments.targetObject#,filterBy:#arguments.filterBy#,filterByField:#arguments.filterByField#,orderBy:#arguments.orderBy#,dbFilters:#arguments.dbFilters#";
+		return "targetObject:#arguments.targetObject#,filterBy:#arguments.filterBy#,filterByField:#arguments.filterByField#,orderBy:#arguments.orderBy#,dbFilters:#arguments.dbFilters#,maxRows:#arguments.maxRows#";
 	}
 
 }

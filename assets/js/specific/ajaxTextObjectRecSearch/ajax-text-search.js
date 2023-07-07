@@ -11,14 +11,25 @@
 			var $selectField = $(this).closest( ".chosen-container" ).prev( "select" );
 			var $inputField = $(this);
 
-			var params = {};
-			params[ 'searchTerm' ] = this.value;
-			params[ 'requestUrl' ] = window.location.href;
-			params[ 'fieldName' ]  = $selectField.attr( "name" );
-
 			var selectedVal = $selectField.val();
 
 			if ( this.value.length >= 2 && ( ( e.keyCode >= 48 && e.keyCode <= 90 ) || e.keyCode == 8 ) ) {
+
+				var params = {};
+				params[ 'searchTerm'   ] = this.value;
+				params[ 'filterBy'     ] = $selectField.data( 'filter-by' );
+				params[ 'targetObject' ] = $selectField.data( 'object' );
+				params[ 'dbFilters'    ] = $selectField.data( 'object-filters' );
+				params[ 'orderBy'      ] = $selectField.data( 'order-by' );
+				params[ 'maxRows'      ] = $selectField.data( 'ajax-maxrows' );
+
+				if ( typeof params[ 'filterBy' ] != 'undefined' ) {
+					var filterByField = params[ 'filterBy' ];
+
+					var selectedParentVal = $('select[data-filter-child-id*="'+ this.id +'"]').val();
+
+					params[ filterByField  ] = selectedParentVal;
+				}
 
 				$.ajax({
 					type: 'POST',
