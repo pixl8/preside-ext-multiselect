@@ -16,17 +16,19 @@
 			if ( this.value.length >= 2 && ( ( e.keyCode >= 48 && e.keyCode <= 90 ) || e.keyCode == 8 ) ) {
 
 				var params = {};
-				params[ 'searchTerm'   ] = this.value;
-				params[ 'filterBy'     ] = $selectField.data( 'filter-by' );
-				params[ 'targetObject' ] = $selectField.data( 'object' );
-				params[ 'dbFilters'    ] = $selectField.data( 'object-filters' );
-				params[ 'orderBy'      ] = $selectField.data( 'order-by' );
-				params[ 'maxRows'      ] = $selectField.data( 'ajax-maxrows' );
+				params[ 'searchTerm'    ] = this.value;
+				params[ 'filterBy'      ] = $selectField.data( 'filter-by' );
+				params[ 'targetObject'  ] = $selectField.data( 'object' );
+				params[ 'dbFilters'     ] = $selectField.data( 'object-filters' );
+				params[ 'orderBy'       ] = $selectField.data( 'order-by' );
+				params[ 'maxRows'       ] = $selectField.data( 'ajax-maxrows' );
+				params[ 'ajaxTxtSearch' ] = $selectField.data( 'ajax-txt-search' );
 
+				// for child select, get parent selected value for filtering
 				if ( typeof params[ 'filterBy' ] != 'undefined' ) {
 					var filterByField = params[ 'filterBy' ];
 
-					var selectedParentVal = $('select[data-filter-child-id*="'+ this.id +'"]').val();
+					var selectedParentVal = $('select[data-filter-child-id*="'+ $selectField.attr( "id" ) +'"]').val();
 
 					params[ filterByField  ] = selectedParentVal;
 				}

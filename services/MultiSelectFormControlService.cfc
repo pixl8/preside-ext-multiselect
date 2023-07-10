@@ -22,6 +22,7 @@ component {
 			, dbFilters     = arguments.reqContext.dbFilters     ?: ""
 			, maxRows       = arguments.reqContext.maxRows       ?: 0
 			, searchTerm    = arguments.reqContext.searchTerm    ?: ""
+			, ajaxTxtSearch = $helpers.isTrue( arguments.reqContext.ajaxTxtSearch ?: 0 )
 		};
 	}
 
@@ -33,11 +34,14 @@ component {
 		var dbFilters     = arguments.preparedParams.dbFilters;
 		var maxRows       = arguments.preparedParams.maxRows;
 		var searchTerm    = arguments.preparedParams.searchTerm;
+		var ajaxTxtSearch = arguments.preparedParams.ajaxTxtSearch;
 
 		if ( !Len( Trim( targetObject ) ) ||
-				( textSearch && !Len( searchTerm ) )
+			( arguments.textSearch && !ajaxTxtSearch ) ||
+				( ajaxTxtSearch && !maxRows ) ||
+					( arguments.textSearch && !Len( searchTerm ) )
 		 ) {
-			return false;
+		 	return false;
 		}
 
 		var requestAllowed = _getMultiSelectAllowListService().isParameterCombinationAllowed(
@@ -47,6 +51,7 @@ component {
 			, orderBy       = orderBy
 			, dbFilters     = dbFilters
 			, maxRows       = maxRows
+			, ajaxTxtSearch = ajaxTxtSearch
 		);
 
 		if ( !requestAllowed ) {

@@ -25,12 +25,18 @@ var pixl8presideExtMultiselect = function() {
 			var filterByField = $selectChild.data( 'filter-by' );
 
 			var data = {};
-			data[ filterByField  ] = selectedParent;
-			data[ 'filterBy'     ] = $selectChild.data( 'filter-by' );
-			data[ 'targetObject' ] = $selectChild.data( 'object' );
-			data[ 'dbFilters'    ] = $selectChild.data( 'object-filters' );
-			data[ 'orderBy'      ] = $selectChild.data( 'order-by' );
-			data[ 'maxRows'      ] = $selectChild.data( 'ajax-maxrows' );
+			data[ filterByField   ] = selectedParent;
+			data[ 'filterBy'      ] = $selectChild.data( 'filter-by' );
+			data[ 'targetObject'  ] = $selectChild.data( 'object' );
+			data[ 'dbFilters'     ] = $selectChild.data( 'object-filters' );
+			data[ 'orderBy'       ] = $selectChild.data( 'order-by' );
+			data[ 'maxRows'       ] = $selectChild.data( 'ajax-maxrows' );
+			data[ 'ajaxTxtSearch' ] = $selectChild.data( 'ajax-txt-search' );
+
+			// if ajax txt search enabled, check pre-selected value (might not be in the option list on first page)
+			if ( typeof data[ 'ajaxTxtSearch' ] != 'undefined' && typeof data[ 'maxRows' ] != 'undefined' ) {
+				data[ 'defaultValues' ] = $selectChild.val();
+			}
 
 			$.ajax({
 				type: 'POST',
