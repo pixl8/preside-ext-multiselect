@@ -20,6 +20,7 @@
 	sortable           = args.sortable         ?: false;
 	ajaxTextSearch     = args.ajaxTextSearch   ?: false;
 	ajaxMaxRows        = args.ajaxMaxRows      ?: 0;
+	ajaxSearchUrl      = args.ajaxSearchUrl    ?: "";
 
 	if ( IsSimpleValue( values ) ) { values = ListToArray( values ); }
 	if ( IsSimpleValue( labels ) ) { labels = ListToArray( labels ); }
@@ -64,7 +65,9 @@
 		data-ajax-txt-search="1"
 	</cfif> <cfif ajaxMaxRows gt 0>
 		data-ajax-maxrows="#ajaxMaxRows#"
-	</cfif> >
+	</cfif><cfif Len( ajaxSearchUrl )>
+		data-ajax-search-url="#ajaxSearchUrl#"
+	</cfif>>
 		<cfloop array="#values#" index="i" item="selectValue">
 			<cfset isSelectedValue = ListFindNoCase( value, selectValue ) />
 			<cfif isTrue( allowDeselect )><option value=""></option></cfif>

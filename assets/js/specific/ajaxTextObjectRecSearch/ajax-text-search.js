@@ -15,6 +15,9 @@
 
 			if ( this.value.length >= 2 && ( ( e.keyCode >= 48 && e.keyCode <= 90 ) || e.keyCode == 8 ) ) {
 
+				var searchUrl       = cfrequest.searchTermUrl;
+				var customSearchUrl = $selectField.data( 'ajax-search-url' );
+
 				var params = {};
 				params[ 'searchTerm'    ] = this.value;
 				params[ 'filterBy'      ] = $selectField.data( 'filter-by' );
@@ -33,9 +36,13 @@
 					params[ filterByField  ] = selectedParentVal;
 				}
 
+				if ( typeof customSearchUrl != 'undefined' && customSearchUrl.length ) {
+					searchUrl = customSearchUrl;
+				}
+
 				$.ajax({
 					type: 'POST',
-					url : cfrequest.searchTermUrl,
+					url : searchUrl,
 					data: params,
 					dataType: 'json',
 					success: function (data) {
