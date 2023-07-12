@@ -1,7 +1,9 @@
 component {
-	property name="presideObjectService"        inject="PresideObjectService";
-	property name="multiSelectAllowListService" inject="multiSelectAllowListService";
-	property name="includeChosenJs"             inject="coldbox:setting:multiSelect.includeChosenJs";
+	property name="presideObjectService"               inject="PresideObjectService";
+	property name="multiSelectAllowListService"        inject="multiSelectAllowListService";
+	property name="multiSelectFormControlService"      inject="multiSelectFormControlService";
+	property name="includeChosenJs"                    inject="coldbox:setting:multiSelect.includeChosenJs";
+	property name="dataManagerService"                 inject="DataManagerService";
 
 	public string function index( event, rc, prc, args={} ) {
 		var object           = args.object        ?: "";
@@ -14,12 +16,19 @@ component {
 		var filterByField    = args.filterByField ?: filterBy;
 		var selectFields     = [ "id",labelField & " as label" ];
 
+		var ajaxTxtSearch    = IsTrue( args.ajaxTextSearch ?: "" );
+		var fieldName        = args.name ?: "";
+		var maxRows          = ajaxTxtSearch ? ( args.ajaxMaxRows ?: 0 ) : 0;
+		var selectUnion      = false;
+
 		multiSelectAllowListService.addToAllowList(
 			  targetObject  = object
 			, filterBy      = filterBy
 			, filterByField = filterByField
 			, orderBy       = orderBy
 			, dbFilters     = savedFilters
+			, maxRows       = maxRows
+			, ajaxTxtSearch = ajaxTxtSearch
 		);
 
 		if( len( valueField ) ) {
@@ -27,12 +36,42 @@ component {
 		}
 
 		if ( object.len() && !defaultEmptyList ) {
-			args.records = presideObjectService.selectData(
-				  objectName   = object
-				, selectFields = selectFields
-				, orderby      = orderBy
-				, savedFilters = ListToArray( savedFilters )
-			);
+			if ( ajaxTxtSearch && maxRows  ) {
+				if ( Len( rc[ fieldName ] ?: "" ) && ( rc[ fieldName ] != args.defaultValue ) ) {
+					args.defaultValue = rc[ fieldName ];
+				}
+
+				if ( Len( args.defaultValue ?: "" ) ) {
+					selectUnion = true;
+				}
+			}
+
+			if ( selectUnion ) {
+				args.records = presideObjectService.selectUnion(
+					selectDataArgs = [
+						{
+							  objectName   = object
+							, selectFields = selectFields
+							, savedFilters = ListToArray( savedFilters )
+							, maxRows      = maxRows
+						}, {
+							  objectName   = object
+							, selectFields = selectFields
+							, savedFilters = ListToArray( savedFilters )
+							, filter       = { id = ListToArray( args.defaultValue ) }
+						}
+					]
+					, orderby      = orderBy
+				);
+			} else {
+				args.records = presideObjectService.selectData(
+					  objectName   = object
+					, selectFields = selectFields
+					, orderby      = orderBy
+					, savedFilters = ListToArray( savedFilters )
+					, maxRows      = maxRows
+				);
+			}
 
 			if( len( valueField ) ) {
 				args.values = ValueArray( args.records[ valueField ] );
@@ -65,9 +104,12 @@ component {
 
 				args.defaultValue = args.savedValue = ValueList( args.savedValue.id );
 			}
+		} else if ( Len( object ) && !defaultEmptyList && ajaxTxtSearch && maxRows ) {
+			event.include( "/js/specific/ajaxTextObjectRecSearch/" )
+				.includeData( { searchTermUrl= event.buildLink( linkTo = "formcontrols.multiselect.getObjectRecordsForAjaxSelectControl" ) } );
 		}
 
-		event.include( "ext-multi-select" );
+		event.include( "/js/specific/multiSelect/" );
 		if( isTrue( args.sortable ) ) {
 			event.include( "ext-jq-chosen-sortable" );
 		}
@@ -80,48 +122,86 @@ component {
 	}
 
 	public void function refreshChildOptions( event, rc, prc, args={} ) {
-		var targetObject   = rc.targetObject  ?: "";
-		var filterBy       = rc.filterBy      ?: "";
-		var filterByField  = rc.filterByField ?: filterBy;
-		var orderBy        = rc.orderBy       ?: "label";
-		var dbFilters      = rc.dbFilters     ?: "";
-		var requestAllowed = multiSelectAllowListService.isParameterCombinationAllowed(
-			  targetObject  = targetObject
-			, filterBy      = filterBy
-			, filterByField = filterByField
-			, orderBy       = orderBy
-			, dbFilters     = dbFilters
-		);
+		var preparedParams = multiSelectFormControlService.processRequestParamsForSelect( reqContext = rc );
 
-		if ( !requestAllowed || !Len( Trim( targetObject ) ) ) {
+		if ( !multiSelectFormControlService.isAjaxRequestAllowed( preparedParams = preparedParams ) ) {
 			event.renderData( data=[], type="json", statusCode=403 );
 			return;
 		}
 
-		filterBy      = listToArray( filterBy );
-		filterByField = listToArray( filterByField );
+		var selectFields = [ "id", "${labelfield} as label" ];
 
-		var filter = {};
-		var i      = 0;
-		for( var key in filterBy ) {
-			i++;
-			if ( structKeyExists( rc, key ) ) {
-				if ( ListLen( filterByField[ i ], "." ) > 1 ) {
-				    filter[ filterByField[ i ] ] = ListToArray( rc[ key ] );
-				} else {
-					filter[ "#targetObject#.#filterByField[ i ]#" ] = ListToArray( rc[ key ] );
-				}
-			}
-		}
-
-		var records = presideObjectService.selectData(
-			  objectName   = targetObject
-			, selectFields = [ "id", "${labelfield} as label" ]
-			, orderby      = orderBy
-			, filter       = filter
-			, savedFilters = ListToArray( dbFilters )
+		var extraFilters = multiSelectFormControlService.getExtraFiltersFromFilterByValues(
+			  reqContext    = rc
+			, filterBy      = listToArray( preparedParams.filterBy )
+			, filterByField = listToArray( preparedParams.filterByField )
+			, targetObject  = preparedParams.targetObject
 		);
 
+		var records = "";
+
+		if ( isArray( rc.defaultValues ?: "" ) ) {
+			rc.defaultValues = arrayToList( rc.defaultValues );
+		}
+
+		if ( Len( rc.defaultValues ?: "" ) ) {
+			records = presideObjectService.selectUnion(
+				selectDataArgs = [
+					{
+						  objectName   = preparedParams.targetObject
+						, selectFields = selectFields
+						, extraFilters = extraFilters
+						, savedFilters = ListToArray( preparedParams.dbFilters )
+						, maxRows      = preparedParams.maxRows
+					}, {
+						  objectName   = preparedParams.targetObject
+						, selectFields = selectFields
+						, extraFilters = extraFilters
+						, savedFilters = ListToArray( preparedParams.dbFilters )
+						, filter       = { id = ListToArray( rc.defaultValues ) }
+					}
+				]
+				, orderby      = preparedParams.orderBy
+			);
+		} else {
+			records = presideObjectService.selectData(
+				  objectName   = preparedParams.targetObject
+				, selectFields = selectFields
+				, extraFilters = extraFilters
+				, savedFilters = ListToArray( preparedParams.dbFilters )
+				, maxRows      = preparedParams.maxRows
+				, orderby      = preparedParams.orderBy
+			);
+		}
+
 		event.renderData( data= QueryToArray( qry=records, columns=records.getColumnList( false ) ), type="json" );
+	}
+
+	public void function getObjectRecordsForAjaxSelectControl() {
+		var preparedParams = multiSelectFormControlService.processRequestParamsForSelect( reqContext = rc );
+
+		if ( !multiSelectFormControlService.isAjaxRequestAllowed( preparedParams = preparedParams, textSearch = true ) ) {
+			event.renderData( data=[], type="json", statusCode=403 );
+			return;
+		}
+
+		var extraFilters = multiSelectFormControlService.getExtraFiltersFromFilterByValues(
+			  reqContext    = rc
+			, filterBy      = listToArray( preparedParams.filterBy )
+			, filterByField = listToArray( preparedParams.filterByField )
+			, targetObject  = preparedParams.targetObject
+		);
+
+		var records = datamanagerService.getRecordsForAjaxSelect(
+			  objectName   = preparedParams.targetObject
+			, selectFields = [ "id", "${labelfield} as label" ]
+			, savedFilters = ListToArray( preparedParams.dbFilters )
+			, searchQuery  = preparedParams.searchTerm
+			, extraFilters = extraFilters
+			, maxRows      = preparedParams.maxRows
+			, orderBy      = preparedParams.orderBy
+		);
+
+		event.renderData( type="json", data=records );
 	}
 }

@@ -1,2 +1,12 @@
 /.twgit_features_subject
 /.twgit
+/assets/node_modules
+/assets/css/**/*.less.css
+/assets/css/**/*.min.css
+/assets/js/**/*.min.js
+/assets/js/**/*.min.map
+/artifacts
+/tests/mxunit*
+npm-debug.log
+.DS_Store
+/build
