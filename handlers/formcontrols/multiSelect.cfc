@@ -53,6 +53,7 @@ component {
 							  objectName   = object
 							, selectFields = selectFields
 							, savedFilters = ListToArray( savedFilters )
+							, orderby      = orderBy
 							, maxRows      = maxRows
 						}, {
 							  objectName   = object
@@ -152,6 +153,7 @@ component {
 						, selectFields = selectFields
 						, extraFilters = extraFilters
 						, savedFilters = ListToArray( preparedParams.dbFilters )
+						, orderby      = orderBy
 						, maxRows      = preparedParams.maxRows
 					}, {
 						  objectName   = preparedParams.targetObject
