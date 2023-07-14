@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.2.0
+
+* Update asset build (minifying assets)
+* Additional form control attributes: ajaxMaxRows, ajaxTextSearch, optional ajaxSearchUrl; load ajaxMaxRows of option list with type text search to retrieve relevant record options via ajax
+
 ## v1.1.3
 
 * Create a dynamic allow list for ajax listing requests based on server-side requested form controls
