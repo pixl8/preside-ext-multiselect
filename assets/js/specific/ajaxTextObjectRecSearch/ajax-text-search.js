@@ -33,6 +33,10 @@
 
 					var selectedParentVal = $('select[data-filter-child-id*="'+ $selectField.attr( "id" ) +'"]').val();
 
+					if ( selectedParentVal && $.isArray( selectedParentVal ) ) {
+						selectedParentVal = selectedParentVal.join( "," );
+					}
+
 					params[ filterByField  ] = selectedParentVal;
 				}
 
