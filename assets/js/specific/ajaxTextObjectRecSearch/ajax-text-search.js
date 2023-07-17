@@ -15,17 +15,17 @@
 
 			if ( this.value.length >= 2 && ( ( e.keyCode >= 48 && e.keyCode <= 90 ) || e.keyCode == 8 ) ) {
 
-				var searchUrl       = cfrequest.searchTermUrl;
-				var customSearchUrl = $selectField.data( 'ajax-search-url' );
+				var searchUrl = $selectField.data( 'ajax-search-url' );
 
 				var params = {};
-				params[ 'searchTerm'    ] = this.value;
-				params[ 'filterBy'      ] = $selectField.data( 'filter-by' );
-				params[ 'targetObject'  ] = $selectField.data( 'object' );
-				params[ 'dbFilters'     ] = $selectField.data( 'object-filters' );
-				params[ 'orderBy'       ] = $selectField.data( 'order-by' );
-				params[ 'maxRows'       ] = $selectField.data( 'ajax-maxrows' );
-				params[ 'ajaxTxtSearch' ] = $selectField.data( 'ajax-txt-search' );
+				params[ 'searchTerm'    ]          = this.value;
+				params[ 'filterBy'      ]          = $selectField.data( 'filter-by' );
+				params[ 'targetObject'  ]          = $selectField.data( 'object' );
+				params[ 'dbFilters'     ]          = $selectField.data( 'object-filters' );
+				params[ 'orderBy'       ]          = $selectField.data( 'order-by' );
+				params[ 'maxRows'       ]          = $selectField.data( 'ajax-maxrows' );
+				params[ 'ajaxTxtSearch' ]          = $selectField.data( 'ajax-txt-search' );
+				params[ 'ajaxSearchCustomFilter' ] = $selectField.data( "ajax-custom-filter" );
 
 				// for child select, get parent selected value for filtering
 				if ( typeof params[ 'filterBy' ] != 'undefined' ) {
@@ -36,8 +36,13 @@
 					params[ filterByField  ] = selectedParentVal;
 				}
 
-				if ( typeof customSearchUrl != 'undefined' && customSearchUrl.length ) {
-					searchUrl = customSearchUrl;
+				// get custom id values for params
+				if ( typeof params[ 'ajaxSearchCustomFilter' ] != 'undefined' ) {
+					var customSearchFilter = params[ 'ajaxSearchCustomFilter' ].split( "," );
+
+					$.each( customSearchFilter, function( index, value ) {
+						params[ value ] = $( '#' + value ).val();
+					} );
 				}
 
 				$.ajax({
