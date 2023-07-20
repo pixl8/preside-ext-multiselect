@@ -2,7 +2,7 @@
 
 ## Overview
 
-This extension provides multi select form control with AJAX filtering functionality binding to Preside data objects. See [Wiki](https://github.com/pixl8/preside-ext-multiselect/wiki) for complete usage documentation.
+This extension provides multi select form control with AJAX filtering functionality binding to Preside data objects.
 
 ## Installation
 
