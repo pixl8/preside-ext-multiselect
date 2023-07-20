@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.2.1
+* Remove ajax type-to-search default url from cfrequest
+* Allow custom filter for type-to-search, used in pair with custom pixl8presideExtMultiselect.fn.updateChildSelect
+* Convert filter values to list
+
 ## v1.2.0
 
 * Update asset build (minifying assets)
