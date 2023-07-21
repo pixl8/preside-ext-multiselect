@@ -6,35 +6,23 @@ This extension provides multi select form control with AJAX filtering functional
 
 ## Installation
 
-_Pre-requisites: Commandbox installed locally._
-
-From the root of your application, type the following command:
-
 ```
 box install preside-ext-multiselect
 ```
 
-Reload your application
 
-## Install the Preside extension (Static)
-1. Add `extensions` folder if not already
-2. Install the submodule from project root: `git submodule add -b stable https://github.com/pixl8/preside-ext-multiselect.git static/extensions/preside-ext-multiselect`
-3. Within `Application.cfc`, add the following lines:
-4. * `this.mappings[ "/extensions" ] = ExpandPath( "/extensions" );`
-5. * `sticker.addBundle( "/extensions/preside-ext-multiselect/assets", "/extensions/preside-ext-multiselect/assets" );`
-6. Anywhere within `.cfm` file that uses multiple select field, define `sticker.include( "ext-custom-chosen" );` at the top of the file
+## Ajax filtering setup
 
-## Install the Preside extension (Web)
-1. Install and enable the extension
+### Sample usage for form field xml definition
 
-### Ajax filtering setup
-#### Sample usage for form field xml definition
+```xml
+<field name="parent_field_name" control="multiSelect" object="parent_db_object" filterChildId="related_child_select_field_name" ajax="/formcontrols/MultiSelect/refreshChildOptions/" extraClass="select-filter-by"/>
 
-    <field name="parent_field_name" control="multiSelect" object="parent_db_object" filterChildId="related_child_select_field_name" ajax="/formcontrols/MultiSelect/refreshChildOptions/" extraClass="select-filter-by"/>
+<field name="related_child_select_field_name"  control="multiSelect" object="child_db_object" filterBy="db_field_link_to_parent" objectFilters="activeOnly" />
+```
 
-    <field name="related_child_select_field_name"  control="multiSelect" object="child_db_object" filterBy="db_field_link_to_parent" objectFilters="activeOnly" />
+### Form attributes definition
 
-#### Form attributes definition
 | Attribute name  | Value  | Usage  |
 |---|---|---|
 | control  | multiSelect  |  |
@@ -44,14 +32,18 @@ Reload your application
 | extraClass | select-filter-by | Required for parent field. |
 | filterBy | Variable: FK within child DB object  | Required for child field. FK within the child DB object that links to the parent table |
 
-### Ajax type-to-search setup
-Useful for `select` with huge list of options to limit a fix number of result on load, and type-to-search to bring up further matching options
-#### Sample usage for form field xml definition
-    <field name="field_custom" ... />
-    <field name="field_with_long_options" control="multiSelect" ...  ajaxMaxRows="10" ajaxTextSearch="1" ajaxSearchCustomFilter="..." ajaxSearchUrl="..." />
+## Ajax type-to-search setup
 
+Useful for `select` with huge list of options to limit a fix number of result on load, and type-to-search to bring up further matching options.
 
-#### Form attributes definition
+### Sample usage for form field xml definition
+
+```xml
+<field name="field_with_long_options" control="multiSelect" ...  ajaxMaxRows="10" ajaxTextSearch="1" ajaxSearchCustomFilter="..." ajaxSearchUrl="..." />
+```
+
+### Form attributes definition
+
 | Attribute name  | Value  | Usage  |
 |---|---|---|
 | control  | multiSelect  |  |
