@@ -16,19 +16,21 @@ component {
 		var filterByField    = args.filterByField ?: filterBy;
 		var selectFields     = [ "id",labelField & " as label" ];
 
-		var ajaxTxtSearch    = IsTrue( args.ajaxTextSearch ?: "" );
-		var fieldName        = args.name ?: "";
-		var maxRows          = ajaxTxtSearch ? ( args.ajaxMaxRows ?: 0 ) : 0;
-		var selectUnion      = false;
+		var ajaxTxtSearch          = IsTrue( args.ajaxTextSearch ?: "" );
+		var fieldName              = args.name ?: "";
+		var maxRows                = ajaxTxtSearch ? ( args.ajaxMaxRows ?: 0 ) : 0;
+		var selectUnion            = false;
+		var ajaxSearchCustomFilter = args.ajaxSearchCustomFilter ?: "";
 
 		multiSelectAllowListService.addToAllowList(
-			  targetObject  = object
-			, filterBy      = filterBy
-			, filterByField = filterByField
-			, orderBy       = orderBy
-			, dbFilters     = savedFilters
-			, maxRows       = maxRows
-			, ajaxTxtSearch = ajaxTxtSearch
+			  targetObject           = object
+			, filterBy               = filterBy
+			, filterByField          = filterByField
+			, orderBy                = orderBy
+			, dbFilters              = savedFilters
+			, maxRows                = maxRows
+			, ajaxTxtSearch          = ajaxTxtSearch
+			, ajaxSearchCustomFilter = ajaxSearchCustomFilter
 		);
 
 		if( len( valueField ) ) {
@@ -106,8 +108,11 @@ component {
 				args.defaultValue = args.savedValue = ValueList( args.savedValue.id );
 			}
 		} else if ( Len( object ) && !defaultEmptyList && ajaxTxtSearch && maxRows ) {
-			event.include( "/js/specific/ajaxTextObjectRecSearch/" )
-				.includeData( { searchTermUrl= event.buildLink( linkTo = "formcontrols.multiselect.getObjectRecordsForAjaxSelectControl" ) } );
+			event.include( "/js/specific/ajaxTextObjectRecSearch/" );
+
+			if ( !Len( args.ajaxSearchUrl ?: "" ) ) {
+				args.ajaxSearchUrl = event.buildLink( linkTo = "formcontrols.multiselect.getObjectRecordsForAjaxSelectControl" );
+			}
 		}
 
 		event.include( "/js/specific/multiSelect/" );
