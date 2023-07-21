@@ -8,19 +8,20 @@
 	extraClass         = args.extraClass       ?: "";
 	placeholder        = args.placeholder      ?: "";
 	// ajax filter options
-	filterChildId      = args.filterChildId    ?: "";
-	ajax               = args.ajax             ?: "";
-	filterBy           = args.filterBy         ?: "";
-	object             = args.object           ?: "";
-	objectFilters      = args.objectFilters    ?: "";
-	multiple           = args.multiple         ?: true;
-	maxSelected        = args.maxSelected      ?: "";
-	orderBy            = args.orderBy          ?: "label";
-	allowDeselect      = args.allowDeselect    ?: false;
-	sortable           = args.sortable         ?: false;
-	ajaxTextSearch     = args.ajaxTextSearch   ?: false;
-	ajaxMaxRows        = args.ajaxMaxRows      ?: 0;
-	ajaxSearchUrl      = args.ajaxSearchUrl    ?: "";
+	filterChildId          = args.filterChildId          ?: "";
+	ajax                   = args.ajax                   ?: "";
+	filterBy               = args.filterBy               ?: "";
+	object                 = args.object                 ?: "";
+	objectFilters          = args.objectFilters          ?: "";
+	multiple               = args.multiple               ?: true;
+	maxSelected            = args.maxSelected            ?: "";
+	orderBy                = args.orderBy                ?: "label";
+	allowDeselect          = args.allowDeselect          ?: false;
+	sortable               = args.sortable               ?: false;
+	ajaxTextSearch         = args.ajaxTextSearch         ?: false;
+	ajaxMaxRows            = args.ajaxMaxRows            ?: 0;
+	ajaxSearchUrl          = args.ajaxSearchUrl          ?: "";
+	ajaxSearchCustomFilter = args.ajaxSearchCustomFilter ?: "";
 
 	if ( IsSimpleValue( values ) ) { values = ListToArray( values ); }
 	if ( IsSimpleValue( labels ) ) { labels = ListToArray( labels ); }
@@ -67,6 +68,8 @@
 		data-ajax-maxrows="#ajaxMaxRows#"
 	</cfif><cfif Len( ajaxSearchUrl )>
 		data-ajax-search-url="#ajaxSearchUrl#"
+	</cfif><cfif Len( ajaxSearchCustomFilter )>
+		data-ajax-custom-filter="#ajaxSearchCustomFilter#"
 	</cfif>>
 		<cfloop array="#values#" index="i" item="selectValue">
 			<cfset isSelectedValue = ListFindNoCase( value, selectValue ) />
