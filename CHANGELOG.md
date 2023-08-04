@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.2.2
+
+* Backward compatibility fix: reinstate ext-multi-select sticker bundle asset
+
 ## v1.2.1
 
 * Remove ajax type-to-search default url from cfrequest

@@ -21,6 +21,8 @@ component {
 		bundle.addAsset( id="ext-jq-chosen-jquery-ui", path="/js/lib/jquery-ui.min.js"             );
 		bundle.addAsset( id="ext-custom-chosen"      , path="/js/specific/chosen/chosen.js"            );
 
+		bundle.addAsset( id="ext-multi-select" , path="/js/specific/multiSelect/multi-select.js" );
+
 		bundle.addAsset( id="ext-css-chosen"   , path="/css/lib/chosen.css"                      );
 
 		bundle.asset( "ext-jq-chosen" ).dependsOn( "ext-css-chosen"    );
