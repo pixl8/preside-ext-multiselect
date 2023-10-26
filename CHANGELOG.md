@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.2.3
+
+* Deselect does not work correctly
+
 ## v1.2.2
 
 * Backward compatibility fix: reinstate ext-multi-select sticker bundle asset
