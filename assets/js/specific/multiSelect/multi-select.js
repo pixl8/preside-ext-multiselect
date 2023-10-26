@@ -18,6 +18,12 @@ var pixl8presideExtMultiselect = function() {
 			var $selectChild       = $( "#"+value );
 			var selectedChildValue = $selectChild.val();
 
+			$selectChild.on('change', function(change, deselected) {
+				if( typeof deselected === 'undefined' ){
+		    		$(this).val('')
+				}
+		  	});
+
 			if ( selectedChildValue && !$.isArray( selectedChildValue ) ) {
 				selectedChildValue = selectedChildValue.split( "," );
 			}
@@ -33,6 +39,7 @@ var pixl8presideExtMultiselect = function() {
 			data[ 'maxRows'       ]          = $selectChild.data( 'ajax-maxrows' );
 			data[ 'ajaxTxtSearch' ]          = $selectChild.data( 'ajax-txt-search' );
 			data[ 'ajaxSearchCustomFilter' ] = $selectChild.data( "ajax-custom-filter" );
+			var allowDeselect                = $selectChild.data( "deselect" );
 
 			// if ajax txt search enabled, check pre-selected value (might not be in the option list on first page)
 			if ( typeof data[ 'ajaxTxtSearch' ] != 'undefined' && typeof data[ 'maxRows' ] != 'undefined' ) {
@@ -47,6 +54,11 @@ var pixl8presideExtMultiselect = function() {
 				success: function (data) {
 
 					$selectChild.empty();
+
+					if( allowDeselect == 1 ){
+						$selectChild.append('<option value=""></option>');
+					}
+
 					for (var i = 0; i < data.length; i++) {
 						if ( selectedChildValue && $.inArray( String(data[i].id), selectedChildValue ) > -1 ) {
 							$selectChild.append('<option value=' + data[i].id + ' selected>' + data[i].label + '</option>');
