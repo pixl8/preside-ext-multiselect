@@ -20,6 +20,7 @@
 				var params = {};
 				params[ 'searchTerm'    ]          = this.value;
 				params[ 'filterBy'      ]          = $selectField.data( 'filter-by' );
+				params[ 'filterByField' ]          = $selectField.data( 'filter-by-field' );
 				params[ 'targetObject'  ]          = $selectField.data( 'object' );
 				params[ 'dbFilters'     ]          = $selectField.data( 'object-filters' );
 				params[ 'orderBy'       ]          = $selectField.data( 'order-by' );
@@ -29,7 +30,11 @@
 
 				// for child select, get parent selected value for filtering
 				if ( typeof params[ 'filterBy' ] != 'undefined' ) {
-					var filterByField = params[ 'filterBy' ];
+					var filterByField = params[ 'filterByField' ];
+
+					if ( filterByField === undefined || filterByField === '' ) {
+						filterByField = params[ 'filterBy' ];
+					}
 
 					var selectedParentVal = $('select[data-filter-child-id*="'+ $selectField.attr( "id" ) +'"]').val();
 
