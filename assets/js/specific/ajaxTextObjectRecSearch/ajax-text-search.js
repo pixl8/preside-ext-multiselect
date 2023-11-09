@@ -30,11 +30,7 @@
 
 				// for child select, get parent selected value for filtering
 				if ( typeof params[ 'filterBy' ] != 'undefined' ) {
-					var filterByField = params[ 'filterByField' ];
-
-					if ( filterByField === undefined || filterByField === '' ) {
-						filterByField = params[ 'filterBy' ];
-					}
+					var filterByField = params[ 'filterBy' ];
 
 					var selectedParentVal = $('select[data-filter-child-id*="'+ $selectField.attr( "id" ) +'"]').val();
 
