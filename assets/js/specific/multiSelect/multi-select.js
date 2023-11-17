@@ -18,12 +18,6 @@ var pixl8presideExtMultiselect = function() {
 			var $selectChild       = $( "#"+value );
 			var selectedChildValue = $selectChild.val();
 
-			$selectChild.on('change', function(change, deselected) {
-				if( typeof deselected === 'undefined' ){
-		    		$(this).val('')
-				}
-		  	});
-
 			if ( selectedChildValue && !$.isArray( selectedChildValue ) ) {
 				selectedChildValue = selectedChildValue.split( "," );
 			}
