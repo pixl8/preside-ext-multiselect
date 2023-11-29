@@ -20,6 +20,7 @@
 				var params = {};
 				params[ 'searchTerm'    ]          = this.value;
 				params[ 'filterBy'      ]          = $selectField.data( 'filter-by' );
+				params[ 'filterByField' ]          = $selectField.data( 'filter-by-field' );
 				params[ 'targetObject'  ]          = $selectField.data( 'object' );
 				params[ 'dbFilters'     ]          = $selectField.data( 'object-filters' );
 				params[ 'orderBy'       ]          = $selectField.data( 'order-by' );

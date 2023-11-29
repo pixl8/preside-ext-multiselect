@@ -11,6 +11,7 @@
 	filterChildId          = args.filterChildId          ?: "";
 	ajax                   = args.ajax                   ?: "";
 	filterBy               = args.filterBy               ?: "";
+	filterByField          = args.filterByField          ?: filterBy;
 	object                 = args.object                 ?: "";
 	objectFilters          = args.objectFilters          ?: "";
 	multiple               = args.multiple               ?: true;
@@ -49,6 +50,8 @@
 		data-ajax-url="#ajax#"
 	</cfif> <cfif Len( filterBy )>
 		data-filter-by="#filterBy#"
+	</cfif> <cfif Len( filterByField )>
+		data-filter-by-field="#filterByField#"
 	</cfif> <cfif Len( object )>
 		data-object="#object#"
 	</cfif> <cfif Len( objectFilters )>

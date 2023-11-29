@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.2.4
+
+* Filter by field functionality is not being used by AJAX
+
 ## v1.2.3
 
 * Deselect does not work correctly
