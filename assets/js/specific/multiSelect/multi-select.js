@@ -33,6 +33,7 @@ var pixl8presideExtMultiselect = function() {
 			var data = {};
 			data[ filterByField   ]          = selectedParent;
 			data[ 'filterBy'      ]          = $selectChild.data( 'filter-by' );
+			data[ 'filterByField' ]          = $selectChild.data( 'filter-by-field' );
 			data[ 'targetObject'  ]          = $selectChild.data( 'object' );
 			data[ 'dbFilters'     ]          = $selectChild.data( 'object-filters' );
 			data[ 'orderBy'       ]          = $selectChild.data( 'order-by' );
