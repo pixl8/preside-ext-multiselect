@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.2.5
+
+* Fix an issue with UX on mobile
+
 ## v1.2.4
 
 * Filter by field functionality is not being used by AJAX
