@@ -7,6 +7,7 @@
 	labels             = args.labels           ?: values;
 	extraClass         = args.extraClass       ?: "";
 	placeholder        = args.placeholder      ?: "";
+	disabled           = args.disabled         ?: false;
 	// ajax filter options
 	filterChildId          = args.filterChildId          ?: "";
 	ajax                   = args.ajax                   ?: "";
@@ -70,6 +71,8 @@
 		data-ajax-search-url="#ajaxSearchUrl#"
 	</cfif><cfif Len( ajaxSearchCustomFilter )>
 		data-ajax-custom-filter="#ajaxSearchCustomFilter#"
+	</cfif><cfif disabled>
+		disabled="disabled"
 	</cfif>>
 		<cfloop array="#values#" index="i" item="selectValue">
 			<cfset isSelectedValue = ListFindNoCase( value, selectValue ) />
