@@ -82,9 +82,12 @@
         // Intercept form submit & order the chosens
         if ($select.closest('form')) {
           $select.closest('form').bind('submit', function(){
-            var $options = $select.chosenOrder();
-            $select.children().remove();
-            $select.append($options);
+		  	var hasSiblings = $select.filter('.' + $select.chosenClassPrefix() + '-sortable[multiple]').first().siblings( '.' + $select.chosenClassPrefix() + '-container' ).length > 0
+			if ( hasSiblings ) {
+				var $options = $select.chosenOrder();
+				$select.children().remove();
+				$select.append($options);
+			}
           });
         }
       } else {
