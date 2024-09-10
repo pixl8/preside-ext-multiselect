@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.2.6
+
+* Fix issue where in mobile view sortable field selected values are not updated
+
 ## v1.2.5
 
 * Fix an issue with UX on mobile
