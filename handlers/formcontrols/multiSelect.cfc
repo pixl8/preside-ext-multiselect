@@ -4,6 +4,7 @@ component {
 	property name="multiSelectFormControlService"      inject="multiSelectFormControlService";
 	property name="includeChosenJs"                    inject="coldbox:setting:multiSelect.includeChosenJs";
 	property name="dataManagerService"                 inject="DataManagerService";
+	property name="labelRendererService"               inject="LabelRendererService";
 
 	public string function index( event, rc, prc, args={} ) {
 		var object           = args.object        ?: "";
@@ -14,7 +15,10 @@ component {
 		var valueField       = args.valueField    ?: '';
 		var filterBy         = args.filterBy      ?: "";
 		var filterByField    = args.filterByField ?: filterBy;
-		var selectFields     = [ "id",labelField & " as label" ];
+
+		var labelRenderer    = args.labelRenderer = args.labelRenderer ?: presideObjectService.getObjectAttribute( object, "labelRenderer" );
+		var labelFields      = labelRendererService.getSelectFieldsForLabel( labelRenderer );
+		var selectFields     = labelFields.append( "id" );
 
 		var ajaxTxtSearch          = IsTrue( args.ajaxTextSearch ?: "" );
 		var fieldName              = args.name ?: "";
@@ -135,7 +139,9 @@ component {
 			return;
 		}
 
-		var selectFields = [ "id", "${labelfield} as label" ];
+		var labelRenderer    = args.labelRenderer = args.labelRenderer ?: presideObjectService.getObjectAttribute( preparedParams.targetObject, "labelRenderer" );
+		var labelFields      = labelRendererService.getSelectFieldsForLabel( labelRenderer );
+		var selectFields     = labelFields.append( "id" );
 
 		var extraFilters = multiSelectFormControlService.getExtraFiltersFromFilterByValues(
 			  reqContext    = rc
@@ -199,9 +205,13 @@ component {
 			, targetObject  = preparedParams.targetObject
 		);
 
+		var labelRenderer    = args.labelRenderer = args.labelRenderer ?: presideObjectService.getObjectAttribute( preparedParams.targetObjects, "labelRenderer" );
+		var labelFields      = labelRendererService.getSelectFieldsForLabel( labelRenderer );
+		var selectFields     = labelFields.append( "id" );
+
 		var records = datamanagerService.getRecordsForAjaxSelect(
 			  objectName   = preparedParams.targetObject
-			, selectFields = [ "id", "${labelfield} as label" ]
+			, selectFields = selectFields
 			, savedFilters = ListToArray( preparedParams.dbFilters )
 			, searchQuery  = preparedParams.searchTerm
 			, extraFilters = extraFilters
