@@ -16,9 +16,7 @@ component {
 		var filterBy         = args.filterBy      ?: "";
 		var filterByField    = args.filterByField ?: filterBy;
 
-		var labelRenderer    = args.labelRenderer = args.labelRenderer ?: presideObjectService.getObjectAttribute( object, "labelRenderer" );
-		var labelFields      = labelRendererService.getSelectFieldsForLabel( labelRenderer );
-		var selectFields     = labelFields.append( "id" );
+		var selectFields = _prepareSelectFields( args );
 
 		var ajaxTxtSearch          = IsTrue( args.ajaxTextSearch ?: "" );
 		var fieldName              = args.name ?: "";
@@ -139,9 +137,7 @@ component {
 			return;
 		}
 
-		var labelRenderer    = args.labelRenderer = args.labelRenderer ?: presideObjectService.getObjectAttribute( preparedParams.targetObject, "labelRenderer" );
-		var labelFields      = labelRendererService.getSelectFieldsForLabel( labelRenderer );
-		var selectFields     = labelFields.append( "id" );
+		var selectFields = _prepareSelectFields( rc );
 
 		var extraFilters = multiSelectFormControlService.getExtraFiltersFromFilterByValues(
 			  reqContext    = rc
@@ -205,9 +201,7 @@ component {
 			, targetObject  = preparedParams.targetObject
 		);
 
-		var labelRenderer    = args.labelRenderer = args.labelRenderer ?: presideObjectService.getObjectAttribute( preparedParams.targetObjects, "labelRenderer" );
-		var labelFields      = labelRendererService.getSelectFieldsForLabel( labelRenderer );
-		var selectFields     = labelFields.append( "id" );
+		var selectFields = _prepareSelectFields( rc );
 
 		var records = datamanagerService.getRecordsForAjaxSelect(
 			  objectName   = preparedParams.targetObject
@@ -220,5 +214,22 @@ component {
 		);
 
 		event.renderData( type="json", data=records );
+	}
+
+	private array function _prepareSelectFields( required struct formParams ) {
+		var object = "";
+
+		if ( StructKeyExists( formParams, "targetObject" ) ) {
+			object = formParams.targetObject ?: "";
+		} else {
+			object = formParams.object ?: "";
+		}
+
+		var labelRenderer = formParams.labelRenderer = formParams.labelRenderer ?: presideObjectService.getObjectAttribute( object, "labelRenderer" );
+		var selectFields  = labelRendererService.getSelectFieldsForLabel( labelRenderer );
+
+		ArrayAppend( selectFields, "id" );
+
+		return selectFields;
 	}
 }
