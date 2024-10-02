@@ -225,6 +225,10 @@ component {
 			object = formParams.object ?: "";
 		}
 
+		if ( !Len( object ) ) {
+			return [ "id", "${labelfield} as label" ];
+		}
+
 		var labelRenderer = formParams.labelRenderer = formParams.labelRenderer ?: presideObjectService.getObjectAttribute( object, "labelRenderer" );
 		var selectFields  = labelRendererService.getSelectFieldsForLabel( labelRenderer );
 
