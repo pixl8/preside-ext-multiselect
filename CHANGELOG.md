@@ -2,7 +2,7 @@
 
 ## v1.2.7
 
-* [PXMULTISEL-15](https://projects.pixl8.london/browse/PXMULTISEL-15) - Ability to configure label renderer
+* PXMULTISEL-15 - Ability to configure label renderer
 
 ## v1.2.6
 
