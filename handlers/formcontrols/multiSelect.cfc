@@ -4,6 +4,7 @@ component {
 	property name="multiSelectFormControlService"      inject="multiSelectFormControlService";
 	property name="includeChosenJs"                    inject="coldbox:setting:multiSelect.includeChosenJs";
 	property name="dataManagerService"                 inject="DataManagerService";
+	property name="labelRendererService"               inject="LabelRendererService";
 
 	public string function index( event, rc, prc, args={} ) {
 		var object           = args.object        ?: "";
@@ -14,7 +15,8 @@ component {
 		var valueField       = args.valueField    ?: '';
 		var filterBy         = args.filterBy      ?: "";
 		var filterByField    = args.filterByField ?: filterBy;
-		var selectFields     = [ "id",labelField & " as label" ];
+
+		var selectFields = _prepareSelectFields( args );
 
 		var ajaxTxtSearch          = IsTrue( args.ajaxTextSearch ?: "" );
 		var fieldName              = args.name ?: "";
@@ -135,7 +137,7 @@ component {
 			return;
 		}
 
-		var selectFields = [ "id", "${labelfield} as label" ];
+		var selectFields = _prepareSelectFields( rc );
 
 		var extraFilters = multiSelectFormControlService.getExtraFiltersFromFilterByValues(
 			  reqContext    = rc
@@ -199,9 +201,11 @@ component {
 			, targetObject  = preparedParams.targetObject
 		);
 
+		var selectFields = _prepareSelectFields( rc );
+
 		var records = datamanagerService.getRecordsForAjaxSelect(
 			  objectName   = preparedParams.targetObject
-			, selectFields = [ "id", "${labelfield} as label" ]
+			, selectFields = selectFields
 			, savedFilters = ListToArray( preparedParams.dbFilters )
 			, searchQuery  = preparedParams.searchTerm
 			, extraFilters = extraFilters
@@ -210,5 +214,26 @@ component {
 		);
 
 		event.renderData( type="json", data=records );
+	}
+
+	private array function _prepareSelectFields( required struct formParams ) {
+		var object = "";
+
+		if ( StructKeyExists( formParams, "targetObject" ) ) {
+			object = formParams.targetObject ?: "";
+		} else {
+			object = formParams.object ?: "";
+		}
+
+		if ( !Len( object ) ) {
+			return [ "id", "${labelfield} as label" ];
+		}
+
+		var labelRenderer = formParams.labelRenderer = formParams.labelRenderer ?: presideObjectService.getObjectAttribute( object, "labelRenderer" );
+		var selectFields  = labelRendererService.getSelectFieldsForLabel( labelRenderer );
+
+		ArrayAppend( selectFields, "id" );
+
+		return selectFields;
 	}
 }
