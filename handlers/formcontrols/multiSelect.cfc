@@ -225,6 +225,10 @@ component {
 			object = formParams.object ?: "";
 		}
 
+		if( len( formParams.labelField ?: "" ) ){
+			return [ "id", formParams.labelField & " as label" ];
+		}
+
 		if ( !Len( object ) ) {
 			return [ "id", "${labelfield} as label" ];
 		}
@@ -233,6 +237,10 @@ component {
 		var selectFields  = labelRendererService.getSelectFieldsForLabel( labelRenderer );
 
 		ArrayAppend( selectFields, "id" );
+
+		if( !ArrayFind( selectFields, 'label' ) ){
+			ArrayAppend( selectFields, "label" );
+		}
 
 		return selectFields;
 	}
