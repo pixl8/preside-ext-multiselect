@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.2.9
+
+* MXMULTISEL-17 - 500 error : Ambiguous `label` column error 
+
 ## v1.2.8
 
 * PXMULTISEL-16 - Multi-select does not work with custom label renderer without label field
