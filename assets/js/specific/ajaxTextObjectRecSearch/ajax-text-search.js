@@ -1,24 +1,35 @@
-( function( $ ) {
+pixl8presideExtMultiselect.fn.ajaxSearch = function( $container ) {
+	$( "select.custom-select[data-ajax-txt-search=1]", $container ).each( function() {
+		let   $selectField     = $( this )
+			, $chosenContainer = $selectField.next( ".chosen-container" )
+			, $inputField      = $chosenContainer.find( "input" )
+			, searchUrl        = $selectField.data( 'ajax-search-url' )
+			, getSearchTerm    = function() { return $inputField.val() };
 
-	$( document ).ready( function() {
+			$chosenContainer.attr( "data-result-is-from-searchterm", false );
 
-		$(".chosen-container input").on('keyup',function( e ){
+			$chosenContainer.on( "click", function(){
+				let resultIsFromSearchterm = $chosenContainer.data( "result-is-from-searchterm" );
 
-			if ( !$(this).closest( ".chosen-container" ).prev( "select[data-ajax-txt-search='1']" ).length ) {
-				return;
-			}
+				if ( resultIsFromSearchterm ) {
+					_ajaxSearch();
+				}
+			});
 
-			var $selectField = $(this).closest( ".chosen-container" ).prev( "select" );
-			var $inputField = $(this);
+			$inputField.on('keyup',function( e ){
+				let searchTerm = getSearchTerm();
 
-			var selectedVal = $selectField.val();
+				if ( ( searchTerm.length >= 2 || e.keyCode == 8 ) && ( ( e.keyCode >= 48 && e.keyCode <= 90 ) || e.keyCode == 8 ) ) {
+					_ajaxSearch();
+				}
+			});
 
-			if ( this.value.length >= 2 && ( ( e.keyCode >= 48 && e.keyCode <= 90 ) || e.keyCode == 8 ) ) {
-
-				var searchUrl = $selectField.data( 'ajax-search-url' );
+			function _ajaxSearch() {
+				let searchTerm   = getSearchTerm();
+				let selectedVal  = $selectField.val();
 
 				var params = {};
-				params[ 'searchTerm'    ]          = this.value;
+				params[ 'searchTerm'    ]          = searchTerm;
 				params[ 'filterBy'      ]          = $selectField.data( 'filter-by' );
 				params[ 'filterByField' ]          = $selectField.data( 'filter-by-field' );
 				params[ 'targetObject'  ]          = $selectField.data( 'object' );
@@ -57,6 +68,9 @@
 					dataType: 'json',
 					success: function (data) {
 						if ( data.length ) {
+							console.log( searchTerm );
+							$chosenContainer.data( "result-is-from-searchterm", searchTerm.length >0 );
+
 							$( 'option', $selectField ).not(':selected').remove();
 
 							if ( selectedVal && !$.isArray( selectedVal ) ) {
@@ -69,14 +83,19 @@
 								}
 							}
 
-							var searched = $inputField.val();
+							var searched = getSearchTerm();
 							$selectField.trigger("chosen:updated");
 							$inputField.val( searched );
 						}
 					}
 				});
 			}
-		});
+	} );
+};
+( function( $ ) {
+
+	$( document ).ready( function() {
+		pixl8presideExtMultiselect.fn.ajaxSearch( $( "body" ) );
 	} );
 
 } )( jQuery );
