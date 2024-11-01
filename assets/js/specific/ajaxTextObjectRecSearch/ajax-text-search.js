@@ -28,7 +28,7 @@ pixl8presideExtMultiselect.fn.ajaxSearch = function( $container ) {
 				let searchTerm   = getSearchTerm();
 				let selectedVal  = $selectField.val();
 
-				var params = {};
+				let params = {};
 				params[ 'searchTerm'    ]          = searchTerm;
 				params[ 'filterBy'      ]          = $selectField.data( 'filter-by' );
 				params[ 'filterByField' ]          = $selectField.data( 'filter-by-field' );
@@ -41,9 +41,9 @@ pixl8presideExtMultiselect.fn.ajaxSearch = function( $container ) {
 
 				// for child select, get parent selected value for filtering
 				if ( typeof params[ 'filterBy' ] != 'undefined' ) {
-					var filterByField = params[ 'filterBy' ];
+					let filterByField = params[ 'filterBy' ];
 
-					var selectedParentVal = $('select[data-filter-child-id*="'+ $selectField.attr( "id" ) +'"]').val();
+					let selectedParentVal = $('select[data-filter-child-id*="'+ $selectField.attr( "id" ) +'"]').val();
 
 					if ( selectedParentVal && $.isArray( selectedParentVal ) ) {
 						selectedParentVal = selectedParentVal.join( "," );
@@ -54,7 +54,7 @@ pixl8presideExtMultiselect.fn.ajaxSearch = function( $container ) {
 
 				// get custom id values for params
 				if ( typeof params[ 'ajaxSearchCustomFilter' ] != 'undefined' ) {
-					var customSearchFilter = params[ 'ajaxSearchCustomFilter' ].split( "," );
+					let customSearchFilter = params[ 'ajaxSearchCustomFilter' ].split( "," );
 
 					$.each( customSearchFilter, function( index, value ) {
 						params[ value ] = $( '#' + value ).val();
@@ -77,13 +77,13 @@ pixl8presideExtMultiselect.fn.ajaxSearch = function( $container ) {
 								selectedVal = selectedVal.split( "," );
 							}
 
-							for (var i = ( data.length - 1 ); i >= 0; i--) {
+							for (let i = ( data.length - 1 ); i >= 0; i--) {
 								if ( $.inArray( String(data[i].value), selectedVal ) == -1 ) {
 									$selectField.prepend('<option value=' + data[i].value + '>' + data[i].text + '</option>');
 								}
 							}
 
-							var searched = getSearchTerm();
+							let searched = getSearchTerm();
 							$selectField.trigger("chosen:updated");
 							$inputField.val( searched );
 						}
