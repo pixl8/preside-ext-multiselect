@@ -68,7 +68,6 @@ pixl8presideExtMultiselect.fn.ajaxSearch = function( $container ) {
 					dataType: 'json',
 					success: function (data) {
 						if ( data.length ) {
-							console.log( searchTerm );
 							$chosenContainer.data( "result-is-from-searchterm", searchTerm.length >0 );
 
 							$( 'option', $selectField ).not(':selected').remove();
