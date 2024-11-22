@@ -41,7 +41,7 @@ component {
 		if ( !Len( Trim( targetObject ) ) ||
 			( arguments.textSearch && !ajaxTxtSearch ) ||
 				( ajaxTxtSearch && !maxRows ) ||
-					( arguments.textSearch && !Len( searchTerm ) )
+					( !arguments.textSearch && Len( searchTerm ) )
 		) {
 			return false;
 		}
