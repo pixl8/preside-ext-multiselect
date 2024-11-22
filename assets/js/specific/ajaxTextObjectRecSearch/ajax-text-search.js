@@ -1,10 +1,12 @@
-pixl8presideExtMultiselect.fn.ajaxSearch = function( $container ) {
-	$( "select.custom-select[data-ajax-txt-search=1]", $container ).each( function() {
-		let   $selectField     = $( this )
-			, $chosenContainer = $selectField.next( ".chosen-container" )
-			, $inputField      = $chosenContainer.find( "input" )
-			, searchUrl        = $selectField.data( 'ajax-search-url' )
-			, getSearchTerm    = function() { return $inputField.val() };
+( function( $ ) {
+
+	$( document ).ready( function() {
+		$( "select.custom-select[data-ajax-txt-search=1]" ).each( function() {
+			let   $selectField     = $( this )
+				, $chosenContainer = $selectField.next( ".chosen-container" )
+				, $inputField      = $chosenContainer.find( "input" )
+				, searchUrl        = $selectField.data( 'ajax-search-url' )
+				, getSearchTerm    = function() { return $inputField.val() };
 
 			$chosenContainer.attr( "data-result-is-from-searchterm", false );
 
@@ -89,12 +91,6 @@ pixl8presideExtMultiselect.fn.ajaxSearch = function( $container ) {
 					}
 				});
 			}
+		} );
 	} );
-};
-( function( $ ) {
-
-	$( document ).ready( function() {
-		pixl8presideExtMultiselect.fn.ajaxSearch( $( "body" ) );
-	} );
-
 } )( jQuery );
