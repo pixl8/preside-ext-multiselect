@@ -1,24 +1,37 @@
 ( function( $ ) {
 
 	$( document ).ready( function() {
+		$( "select.custom-select[data-ajax-txt-search=1]" ).each( function() {
+			let   $selectField     = $( this )
+				, $chosenContainer = $selectField.next( ".chosen-container" )
+				, $inputField      = $chosenContainer.find( "input" )
+				, searchUrl        = $selectField.data( 'ajax-search-url' )
+				, getSearchTerm    = function() { return $inputField.val() };
 
-		$(".chosen-container input").on('keyup',function( e ){
+			$chosenContainer.attr( "data-result-is-from-searchterm", false );
 
-			if ( !$(this).closest( ".chosen-container" ).prev( "select[data-ajax-txt-search='1']" ).length ) {
-				return;
-			}
+			$chosenContainer.on( "click", function(){
+				let resultIsFromSearchterm = $chosenContainer.data( "result-is-from-searchterm" );
 
-			var $selectField = $(this).closest( ".chosen-container" ).prev( "select" );
-			var $inputField = $(this);
+				if ( resultIsFromSearchterm ) {
+					_ajaxSearch();
+				}
+			});
 
-			var selectedVal = $selectField.val();
+			$inputField.on('keyup',function( e ){
+				let searchTerm = getSearchTerm();
 
-			if ( this.value.length >= 2 && ( ( e.keyCode >= 48 && e.keyCode <= 90 ) || e.keyCode == 8 ) ) {
+				if ( ( searchTerm.length >= 2 || e.keyCode == 8 ) && ( ( e.keyCode >= 48 && e.keyCode <= 90 ) || e.keyCode == 8 ) ) {
+					_ajaxSearch();
+				}
+			});
 
-				var searchUrl = $selectField.data( 'ajax-search-url' );
+			function _ajaxSearch() {
+				let searchTerm   = getSearchTerm();
+				let selectedVal  = $selectField.val();
 
-				var params = {};
-				params[ 'searchTerm'    ]          = this.value;
+				let params = {};
+				params[ 'searchTerm'    ]          = searchTerm;
 				params[ 'filterBy'      ]          = $selectField.data( 'filter-by' );
 				params[ 'filterByField' ]          = $selectField.data( 'filter-by-field' );
 				params[ 'targetObject'  ]          = $selectField.data( 'object' );
@@ -30,9 +43,9 @@
 
 				// for child select, get parent selected value for filtering
 				if ( typeof params[ 'filterBy' ] != 'undefined' ) {
-					var filterByField = params[ 'filterBy' ];
+					let filterByField = params[ 'filterBy' ];
 
-					var selectedParentVal = $('select[data-filter-child-id*="'+ $selectField.attr( "id" ) +'"]').val();
+					let selectedParentVal = $('select[data-filter-child-id*="'+ $selectField.attr( "id" ) +'"]').val();
 
 					if ( selectedParentVal && $.isArray( selectedParentVal ) ) {
 						selectedParentVal = selectedParentVal.join( "," );
@@ -43,7 +56,7 @@
 
 				// get custom id values for params
 				if ( typeof params[ 'ajaxSearchCustomFilter' ] != 'undefined' ) {
-					var customSearchFilter = params[ 'ajaxSearchCustomFilter' ].split( "," );
+					let customSearchFilter = params[ 'ajaxSearchCustomFilter' ].split( "," );
 
 					$.each( customSearchFilter, function( index, value ) {
 						params[ value ] = $( '#' + value ).val();
@@ -57,26 +70,27 @@
 					dataType: 'json',
 					success: function (data) {
 						if ( data.length ) {
+							$chosenContainer.data( "result-is-from-searchterm", searchTerm.length >0 );
+
 							$( 'option', $selectField ).not(':selected').remove();
 
 							if ( selectedVal && !$.isArray( selectedVal ) ) {
 								selectedVal = selectedVal.split( "," );
 							}
 
-							for (var i = ( data.length - 1 ); i >= 0; i--) {
+							for (let i = ( data.length - 1 ); i >= 0; i--) {
 								if ( $.inArray( String(data[i].value), selectedVal ) == -1 ) {
 									$selectField.prepend('<option value=' + data[i].value + '>' + data[i].text + '</option>');
 								}
 							}
 
-							var searched = $inputField.val();
+							let searched = getSearchTerm();
 							$selectField.trigger("chosen:updated");
 							$inputField.val( searched );
 						}
 					}
 				});
 			}
-		});
+		} );
 	} );
-
 } )( jQuery );
