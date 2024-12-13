@@ -11,12 +11,17 @@ component {
 		var labelField       = args.labelField    ?: "label";
 		var savedFilters     = args.objectFilters ?: "";
 		var defaultEmptyList = args.defaultEmptyList ?: false;
+		var disabled         = args.disabled         ?: false;
 		var orderBy          = args.orderBy       ?: 'label';
 		var valueField       = args.valueField    ?: '';
 		var filterBy         = args.filterBy      ?: "";
 		var filterByField    = args.filterByField ?: filterBy;
 
 		var selectFields = _prepareSelectFields( args );
+
+		if ( disabled ) {
+			args.sortable = false;
+		}
 
 		var ajaxTxtSearch          = IsTrue( args.ajaxTextSearch ?: "" );
 		var fieldName              = args.name ?: "";

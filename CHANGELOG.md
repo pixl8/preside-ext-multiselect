@@ -1,8 +1,12 @@
 # Changelog
 
+## v1.2.11
+
+* PXMULTISEL-14 - Allow rendering of a read only control
+
 ## v1.2.10
 
-* [PXMULTISEL-18](https://projects.pixl8.london/browse/PXMULTISEL-18) - Multiselect ajax search is not reseting result
+* PXMULTISEL-18 - Multiselect ajax search is not reseting result
 
 ## v1.2.9
 
