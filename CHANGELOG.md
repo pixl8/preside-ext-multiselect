@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.2.12
+
+* PXMULTISEL-21 - Unwanted empty options in select
+
 ## v1.2.11
 
 * PXMULTISEL-14 - Allow rendering of a read only control
