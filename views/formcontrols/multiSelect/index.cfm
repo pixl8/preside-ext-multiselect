@@ -77,9 +77,9 @@
 	</cfif><cfif disabled>
 		disabled="disabled"
 	</cfif>>
+		<cfif isTrue( allowDeselect )><option value=""></option></cfif>
 		<cfloop array="#values#" index="i" item="selectValue">
 			<cfset isSelectedValue = ListFindNoCase( value, selectValue ) />
-			<cfif isTrue( allowDeselect )><option value=""></option></cfif>
 			<option value="#HtmlEditFormat( selectValue )#"
 				<cfif isSelectedValue || (!len(value) && labels[i]==defaultLabel ) > selected="selected"</cfif>
 			>#HtmlEditFormat( translateResource( labels[i] ?: "", labels[i] ?: "" ) )#</option>
