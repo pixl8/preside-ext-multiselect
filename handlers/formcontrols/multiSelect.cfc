@@ -215,7 +215,7 @@ component {
 			, extraFilters  = extraFilters
 			, maxRows       = preparedParams.maxRows
 			, orderBy       = preparedParams.orderBy
-			, labelRenderer = rc.labelRenderer ?: ""
+			, labelRenderer = preparedParams.labelRenderer ?: ( rc.labelRenderer ?: "" )
 		);
 
 		event.renderData( type="json", data=records );

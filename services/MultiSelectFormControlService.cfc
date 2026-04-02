@@ -24,6 +24,7 @@ component {
 			, searchTerm            = arguments.reqContext.searchTerm    ?: ""
 			, ajaxTxtSearch         = $helpers.isTrue( arguments.reqContext.ajaxTxtSearch ?: 0 )
 			, ajaxSearchCustomFilter = arguments.reqContext.ajaxSearchCustomFilter    ?: ""
+			, labelRenderer          = arguments.reqContext.labelRenderer             ?: ""
 		};
 	}
 
