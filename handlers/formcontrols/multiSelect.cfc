@@ -215,7 +215,7 @@ component {
 			, extraFilters  = extraFilters
 			, maxRows       = preparedParams.maxRows
 			, orderBy       = preparedParams.orderBy
-			, labelRenderer = preparedParams.labelRenderer ?: ( rc.labelRenderer ?: "" )
+			, labelRenderer = presideObjectService.getObjectAttribute( preparedParams.targetObject, "labelRenderer" )
 		);
 
 		event.renderData( type="json", data=records );
