@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.2.13
+
+* PXMULTISEL-22 - Pass labelRenderer to getRecordsForAjaxSelect() in multiselect AJAX handler
+
 ## v1.2.12
 
 * PXMULTISEL-21 - Unwanted empty options in select
