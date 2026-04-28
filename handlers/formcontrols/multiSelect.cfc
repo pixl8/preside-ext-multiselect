@@ -208,13 +208,14 @@ component {
 		var selectFields = _prepareSelectFields( rc );
 
 		var records = datamanagerService.getRecordsForAjaxSelect(
-			  objectName   = preparedParams.targetObject
-			, selectFields = selectFields
-			, savedFilters = ListToArray( preparedParams.dbFilters )
-			, searchQuery  = preparedParams.searchTerm
-			, extraFilters = extraFilters
-			, maxRows      = preparedParams.maxRows
-			, orderBy      = preparedParams.orderBy
+			  objectName    = preparedParams.targetObject
+			, selectFields  = selectFields
+			, savedFilters  = ListToArray( preparedParams.dbFilters )
+			, searchQuery   = preparedParams.searchTerm
+			, extraFilters  = extraFilters
+			, maxRows       = preparedParams.maxRows
+			, orderBy       = preparedParams.orderBy
+			, labelRenderer = presideObjectService.getObjectAttribute( preparedParams.targetObject, "labelRenderer" )
 		);
 
 		event.renderData( type="json", data=records );
