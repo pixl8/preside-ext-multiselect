@@ -20,12 +20,12 @@ component {
 		, boolean ajaxTxtSearch         = false
 		, string ajaxSearchCustomFilter = ""
 	) {
-		var hashedCacheKey = Hash( _getCacheKey( argumentCollection=arguments ) );
-
+		var hashedCacheKey = Hash( _getCacheKey( argumentCollection=arguments ), "MD5" );
+		var allowListDao   = $getPresideObject( "multiselect_allow_list" );
 		try {
-			$getPresideObject( "multiselect_allow_list" ).insertData( data={ id=hashedCacheKey } );
+			allowListDao.insertData( data={ id=hashedCacheKey } );
 		} catch ( database e ) {
-			if ( !$getPresideObject( "multiselect_allow_list" ).dataExists( id=hashedCacheKey, useCache=false ) ) {
+			if ( !allowListDao.dataExists( id=hashedCacheKey, useCache=false ) ) {
 				rethrow;
 			}
 		}
@@ -41,7 +41,7 @@ component {
 		, boolean ajaxTxtSearch         = false
 		, string ajaxSearchCustomFilter = ""
 	) {
-		var hashedCacheKey = Hash( _getCacheKey( argumentCollection=arguments ) );
+		var hashedCacheKey = Hash( _getCacheKey( argumentCollection=arguments ), "MD5" );
 
 		return $getPresideObject( "multiselect_allow_list" ).dataExists( id=hashedCacheKey, useCache=false );
 	}
