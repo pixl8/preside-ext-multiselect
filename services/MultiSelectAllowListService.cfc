@@ -4,8 +4,6 @@
  */
 component {
 
-	variables._allowListCache = {};
-
 // CONSTRUCTOR
 	public any function init() {
 		return this;
@@ -22,10 +20,14 @@ component {
 		, boolean ajaxTxtSearch         = false
 		, string ajaxSearchCustomFilter = ""
 	) {
-		var cacheKey = _getCacheKey( argumentCollection=arguments );
-
-		if ( !StructKeyExists( variables._allowListCache, cacheKey ) ) {
-			variables._allowListCache[ cacheKey ] = true;
+		var hashedCacheKey = Hash( _getCacheKey( argumentCollection=arguments ), "MD5" );
+		var allowListDao   = $getPresideObject( "multiselect_allow_list" );
+		try {
+			allowListDao.insertData( data={ id=hashedCacheKey } );
+		} catch ( database e ) {
+			if ( !allowListDao.dataExists( id=hashedCacheKey, useCache=false ) ) {
+				rethrow;
+			}
 		}
 	}
 
@@ -39,7 +41,9 @@ component {
 		, boolean ajaxTxtSearch         = false
 		, string ajaxSearchCustomFilter = ""
 	) {
-		return variables._allowListCache[ _getCacheKey( argumentCollection=arguments ) ] ?: false;
+		var hashedCacheKey = Hash( _getCacheKey( argumentCollection=arguments ), "MD5" );
+
+		return $getPresideObject( "multiselect_allow_list" ).dataExists( id=hashedCacheKey, useCache=false );
 	}
 
 // PRIVATE HELPERS
