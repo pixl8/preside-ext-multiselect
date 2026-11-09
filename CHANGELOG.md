@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.1.4
+
+* Limit selectFIelds to developer supplied fields
+
 ## v1.1.3
 
 * Create a dynamic allow list for ajax listing requests based on server-side requested form controls
