@@ -40,6 +40,7 @@
 				params[ 'maxRows'       ]          = $selectField.data( 'ajax-maxrows' );
 				params[ 'ajaxTxtSearch' ]          = $selectField.data( 'ajax-txt-search' );
 				params[ 'ajaxSearchCustomFilter' ] = $selectField.data( "ajax-custom-filter" );
+				params[ 'selectFieldsKey' ]        = $selectField.attr( "data-select-fields-key" );
 
 				// for child select, get parent selected value for filtering
 				if ( typeof params[ 'filterBy' ] != 'undefined' ) {
@@ -64,7 +65,7 @@
 				}
 
 				$.ajax({
-					type: 'POST',
+					type: 'GET',
 					url : searchUrl,
 					data: params,
 					dataType: 'json',
