@@ -65,7 +65,7 @@
 				}
 
 				$.ajax({
-					type: 'POST',
+					type: 'GET',
 					url : searchUrl,
 					data: params,
 					dataType: 'json',

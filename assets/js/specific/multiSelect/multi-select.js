@@ -43,7 +43,7 @@ var pixl8presideExtMultiselect = function() {
 			}
 
 			$.ajax({
-				type: 'POST',
+				type: 'GET',
 				url : ajaxUrl,
 				data: data,
 				dataType: 'json',
