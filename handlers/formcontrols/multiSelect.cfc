@@ -29,7 +29,7 @@ component {
 		var selectUnion            = false;
 		var ajaxSearchCustomFilter = args.ajaxSearchCustomFilter ?: "";
 
-		multiSelectAllowListService.addToAllowList(
+		args.selectFieldsKey = multiSelectAllowListService.addToAllowList(
 			  targetObject           = object
 			, filterBy               = filterBy
 			, filterByField          = filterByField
@@ -38,6 +38,7 @@ component {
 			, maxRows                = maxRows
 			, ajaxTxtSearch          = ajaxTxtSearch
 			, ajaxSearchCustomFilter = ajaxSearchCustomFilter
+			, selectFields           = selectFields
 		);
 
 		if( len( valueField ) ) {
@@ -141,7 +142,12 @@ component {
 			return;
 		}
 
-		var selectFields = _prepareSelectFields( rc );
+		var selectFields = multiSelectFormControlService.getAllowedSelectFields( preparedParams=preparedParams );
+
+		if ( !ArrayLen( selectFields ) ) {
+			event.renderData( data=[], type="json", statusCode=403 );
+			return;
+		}
 
 		var extraFilters = multiSelectFormControlService.getExtraFiltersFromFilterByValues(
 			  reqContext    = rc
@@ -164,7 +170,7 @@ component {
 						, selectFields = selectFields
 						, extraFilters = extraFilters
 						, savedFilters = ListToArray( preparedParams.dbFilters )
-						, orderby      = orderBy
+						, orderby      = preparedParams.orderBy
 						, maxRows      = preparedParams.maxRows
 					}, {
 						  objectName   = preparedParams.targetObject
@@ -205,7 +211,12 @@ component {
 			, targetObject  = preparedParams.targetObject
 		);
 
-		var selectFields = _prepareSelectFields( rc );
+		var selectFields = multiSelectFormControlService.getAllowedSelectFields( preparedParams=preparedParams );
+
+		if ( !ArrayLen( selectFields ) ) {
+			event.renderData( data=[], type="json", statusCode=403 );
+			return;
+		}
 
 		var records = datamanagerService.getRecordsForAjaxSelect(
 			  objectName    = preparedParams.targetObject

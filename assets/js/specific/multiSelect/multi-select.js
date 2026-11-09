@@ -34,6 +34,7 @@ var pixl8presideExtMultiselect = function() {
 			data[ 'maxRows'       ]          = $selectChild.data( 'ajax-maxrows' );
 			data[ 'ajaxTxtSearch' ]          = $selectChild.data( 'ajax-txt-search' );
 			data[ 'ajaxSearchCustomFilter' ] = $selectChild.data( "ajax-custom-filter" );
+			data[ 'selectFieldsKey' ]        = $selectChild.attr( "data-select-fields-key" );
 			var allowDeselect                = $selectChild.data( "deselect" );
 
 			// if ajax txt search enabled, check pre-selected value (might not be in the option list on first page)
