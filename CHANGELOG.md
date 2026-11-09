@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.2.14
+
+* PXMULTISEL-24 - Limit select fields in ajax endpoint
+
 ## v1.2.13
 
 * PXMULTISEL-22 - Pass labelRenderer to getRecordsForAjaxSelect() in multiselect AJAX handler

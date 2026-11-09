@@ -24,6 +24,7 @@
 	ajaxMaxRows            = args.ajaxMaxRows            ?: 0;
 	ajaxSearchUrl          = args.ajaxSearchUrl          ?: "";
 	ajaxSearchCustomFilter = args.ajaxSearchCustomFilter ?: "";
+	selectFieldsKey        = args.selectFieldsKey        ?: "";
 
 	if ( IsSimpleValue( values ) ) { values = ListToArray( values ); }
 	if ( IsSimpleValue( labels ) ) { labels = ListToArray( labels ); }
@@ -62,6 +63,8 @@
 		<cfif isNumeric( maxSelected ) AND maxSelected GT 0> data-max-selected="#maxSelected#"</cfif>
 	</cfif> <cfif Len( orderBy )>
 		data-order-by="#orderBy#"
+	</cfif> <cfif Len( selectFieldsKey )>
+		data-select-fields-key="#EncodeForHtmlAttribute( selectFieldsKey )#"
 	</cfif> <cfif isTrue( allowDeselect )>
 		data-deselect="true"
 	</cfif> <cfif isTrue( sortable )>
