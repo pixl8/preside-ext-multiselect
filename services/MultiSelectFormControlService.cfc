@@ -15,28 +15,25 @@ component {
 
 	public struct function processRequestParamsForSelect( required struct reqContext ) {
 		return {
-			  targetObject          = arguments.reqContext.targetObject  ?: ""
-			, filterBy              = arguments.reqContext.filterBy      ?: ""
-			, filterByField         = arguments.reqContext.filterByField ?: ( arguments.reqContext.filterBy ?: "" )
-			, orderBy               = arguments.reqContext.orderBy       ?: "label"
-			, dbFilters             = arguments.reqContext.dbFilters     ?: ""
-			, maxRows               = arguments.reqContext.maxRows       ?: 0
-			, searchTerm            = arguments.reqContext.searchTerm    ?: ""
-			, ajaxTxtSearch         = $helpers.isTrue( arguments.reqContext.ajaxTxtSearch ?: 0 )
-			, ajaxSearchCustomFilter = arguments.reqContext.ajaxSearchCustomFilter    ?: ""
+			  targetObject           = arguments.reqContext.targetObject           ?: ""
+			, filterBy               = arguments.reqContext.filterBy               ?: ""
+			, filterByField          = arguments.reqContext.filterByField          ?: ( arguments.reqContext.filterBy ?: "" )
+			, orderBy                = arguments.reqContext.orderBy                ?: "label"
+			, dbFilters              = arguments.reqContext.dbFilters              ?: ""
+			, maxRows                = arguments.reqContext.maxRows                ?: 0
+			, searchTerm             = arguments.reqContext.searchTerm             ?: ""
+			, ajaxTxtSearch          = $helpers.isTrue( arguments.reqContext.ajaxTxtSearch ?: 0 )
+			, ajaxSearchCustomFilter = arguments.reqContext.ajaxSearchCustomFilter ?: ""
+			, selectFieldsKey        = arguments.reqContext.selectFieldsKey        ?: ""
 		};
 	}
 
 	public boolean function isAjaxRequestAllowed( required struct preparedParams, boolean textSearch = false ) {
-		var targetObject           = arguments.preparedParams.targetObject;
-		var filterBy               = arguments.preparedParams.filterBy;
-		var filterByField          = arguments.preparedParams.filterByField;
-		var orderBy                = arguments.preparedParams.orderBy;
-		var dbFilters              = arguments.preparedParams.dbFilters;
-		var maxRows                = arguments.preparedParams.maxRows;
-		var searchTerm             = arguments.preparedParams.searchTerm;
-		var ajaxTxtSearch          = arguments.preparedParams.ajaxTxtSearch;
-		var ajaxSearchCustomFilter = arguments.preparedParams.ajaxSearchCustomFilter
+		var allowListArguments = _getAllowListArguments( arguments.preparedParams );
+		var targetObject       = allowListArguments.targetObject;
+		var maxRows            = allowListArguments.maxRows;
+		var searchTerm         = arguments.preparedParams.searchTerm ?: "";
+		var ajaxTxtSearch      = allowListArguments.ajaxTxtSearch;
 
 		if ( !Len( Trim( targetObject ) ) ||
 			( arguments.textSearch && !ajaxTxtSearch ) ||
@@ -46,22 +43,13 @@ component {
 			return false;
 		}
 
-		var requestAllowed = _getMultiSelectAllowListService().isParameterCombinationAllowed(
-			  targetObject           = targetObject
-			, filterBy               = filterBy
-			, filterByField          = filterByField
-			, orderBy                = orderBy
-			, dbFilters              = dbFilters
-			, maxRows                = maxRows
-			, ajaxTxtSearch          = ajaxTxtSearch
-			, ajaxSearchCustomFilter = ajaxSearchCustomFilter
+		return _getMultiSelectAllowListService().isParameterCombinationAllowed( argumentCollection=allowListArguments );
+	}
+
+	public array function getAllowedSelectFields( required struct preparedParams ) {
+		return _getMultiSelectAllowListService().getAllowedSelectFields(
+			argumentCollection = _getAllowListArguments( arguments.preparedParams )
 		);
-
-		if ( !requestAllowed ) {
-			return false;
-		}
-
-		return true;
 	}
 
 	public array function getExtraFiltersFromFilterByValues( required struct reqContext, required array filterBy, required array filterByField, required string targetObject ) {
@@ -89,6 +77,20 @@ component {
 		}
 
 		return extraFilters;
+	}
+
+	private struct function _getAllowListArguments( required struct preparedParams ) {
+		return {
+			  targetObject           = arguments.preparedParams.targetObject           ?: ""
+			, filterBy               = arguments.preparedParams.filterBy               ?: ""
+			, filterByField          = arguments.preparedParams.filterByField          ?: ""
+			, orderBy                = arguments.preparedParams.orderBy                ?: ""
+			, dbFilters              = arguments.preparedParams.dbFilters              ?: ""
+			, maxRows                = arguments.preparedParams.maxRows                ?: 0
+			, ajaxTxtSearch          = arguments.preparedParams.ajaxTxtSearch          ?: false
+			, ajaxSearchCustomFilter = arguments.preparedParams.ajaxSearchCustomFilter ?: ""
+			, selectFieldsKey        = arguments.preparedParams.selectFieldsKey        ?: ""
+		};
 	}
 
 	private any function _getMultiSelectAllowListService() {
