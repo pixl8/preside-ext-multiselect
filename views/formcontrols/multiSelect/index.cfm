@@ -8,16 +8,17 @@
 	extraClass         = args.extraClass       ?: "";
 	placeholder        = args.placeholder      ?: "";
 	// ajax filter options
-	filterChildId      = args.filterChildId    ?: "";
-	ajax               = args.ajax             ?: "";
-	filterBy           = args.filterBy         ?: "";
-	object             = args.object           ?: "";
-	objectFilters      = args.objectFilters    ?: "";
-	multiple           = args.multiple         ?: true;
-	maxSelected        = args.maxSelected      ?: "";
-	orderBy            = args.orderBy          ?: "label";
-	allowDeselect      = args.allowDeselect    ?: false;
-	sortable           = args.sortable         ?: false;
+	filterChildId   = args.filterChildId   ?: "";
+	ajax            = args.ajax            ?: "";
+	filterBy        = args.filterBy        ?: "";
+	object          = args.object          ?: "";
+	objectFilters   = args.objectFilters   ?: "";
+	multiple        = args.multiple        ?: true;
+	maxSelected     = args.maxSelected     ?: "";
+	orderBy         = args.orderBy         ?: "label";
+	allowDeselect   = args.allowDeselect   ?: false;
+	sortable        = args.sortable        ?: false;
+	selectFieldsKey = args.selectFieldsKey ?: "";
 
 	if ( IsSimpleValue( values ) ) { values = ListToArray( values ); }
 	if ( IsSimpleValue( labels ) ) { labels = ListToArray( labels ); }
@@ -54,6 +55,8 @@
 		<cfif isNumeric( maxSelected ) AND maxSelected GT 0> data-max-selected="#maxSelected#"</cfif>
 	</cfif> <cfif Len( orderBy )>
 		data-order-by="#orderBy#"
+	</cfif> <cfif Len( selectFieldsKey )>
+		data-select-fields-key="#EncodeForHtmlAttribute( selectFieldsKey )#"
 	</cfif> <cfif isTrue( allowDeselect )>
 		data-deselect="true"
 	</cfif> <cfif isTrue( sortable )>

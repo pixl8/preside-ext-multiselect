@@ -12,14 +12,15 @@ component {
 		var valueField       = args.valueField    ?: '';
 		var filterBy         = args.filterBy      ?: "";
 		var filterByField    = args.filterByField ?: filterBy;
-		var selectFields     = [ "id",labelField & " as label" ];
+		var selectFields     = [ "id", labelField & " as label" ];
 
-		multiSelectAllowListService.addToAllowList(
+		args.selectFieldsKey = multiSelectAllowListService.addToAllowList(
 			  targetObject  = object
 			, filterBy      = filterBy
 			, filterByField = filterByField
 			, orderBy       = orderBy
 			, dbFilters     = savedFilters
+			, selectFields  = selectFields
 		);
 
 		if( len( valueField ) ) {
@@ -80,20 +81,30 @@ component {
 	}
 
 	public void function refreshChildOptions( event, rc, prc, args={} ) {
-		var targetObject   = rc.targetObject  ?: "";
-		var filterBy       = rc.filterBy      ?: "";
-		var filterByField  = rc.filterByField ?: filterBy;
-		var orderBy        = rc.orderBy       ?: "label";
-		var dbFilters      = rc.dbFilters     ?: "";
-		var requestAllowed = multiSelectAllowListService.isParameterCombinationAllowed(
-			  targetObject  = targetObject
-			, filterBy      = filterBy
-			, filterByField = filterByField
-			, orderBy       = orderBy
-			, dbFilters     = dbFilters
+		var targetObject    = rc.targetObject    ?: "";
+		var filterBy        = rc.filterBy        ?: "";
+		var filterByField   = rc.filterByField   ?: filterBy;
+		var orderBy         = rc.orderBy         ?: "label";
+		var dbFilters       = rc.dbFilters       ?: "";
+		var selectFieldsKey = rc.selectFieldsKey ?: "";
+		var requestAllowed  = multiSelectAllowListService.isParameterCombinationAllowed(
+			  targetObject    = targetObject
+			, filterBy        = filterBy
+			, filterByField   = filterByField
+			, orderBy         = orderBy
+			, dbFilters       = dbFilters
+			, selectFieldsKey = selectFieldsKey
+		);
+		var selectFields = multiSelectAllowListService.getAllowedSelectFields(
+			  targetObject    = targetObject
+			, filterBy        = filterBy
+			, filterByField   = filterByField
+			, orderBy         = orderBy
+			, dbFilters       = dbFilters
+			, selectFieldsKey = selectFieldsKey
 		);
 
-		if ( !requestAllowed || !Len( Trim( targetObject ) ) ) {
+		if ( !requestAllowed || !Len( Trim( targetObject ) ) || !ArrayLen( selectFields ) ) {
 			event.renderData( data=[], type="json", statusCode=403 );
 			return;
 		}
@@ -107,7 +118,7 @@ component {
 			i++;
 			if ( structKeyExists( rc, key ) ) {
 				if ( ListLen( filterByField[ i ], "." ) > 1 ) {
-				    filter[ filterByField[ i ] ] = ListToArray( rc[ key ] );
+					filter[ filterByField[ i ] ] = ListToArray( rc[ key ] );
 				} else {
 					filter[ "#targetObject#.#filterByField[ i ]#" ] = ListToArray( rc[ key ] );
 				}
@@ -116,7 +127,7 @@ component {
 
 		var records = presideObjectService.selectData(
 			  objectName   = targetObject
-			, selectFields = [ "id", "${labelfield} as label" ]
+			, selectFields = selectFields
 			, orderby      = orderBy
 			, filter       = filter
 			, savedFilters = ListToArray( dbFilters )

@@ -30,6 +30,7 @@ var pixl8presideExtMultiselect = function() {
 			data[ 'targetObject' ] = $selectChild.data( 'object' );
 			data[ 'dbFilters'    ] = $selectChild.data( 'object-filters' );
 			data[ 'orderBy'      ] = $selectChild.data( 'order-by' );
+			data[ 'selectFieldsKey' ] = $selectChild.attr( 'data-select-fields-key' );
 
 			$.ajax({
 				type: 'POST',

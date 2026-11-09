@@ -20,5 +20,14 @@
         ".travis.yml",
         ".twgit_features_subject",
         "*.sh"
-    ]
+    ],
+    "devDependencies":{
+        "testbox":"4.2.1"
+    },
+    "installPaths":{
+        "testbox":"tests/testbox/"
+    },
+    "testbox":{
+        "runner":"http://127.0.0.1:6194/runtests.cfm"
+    }
 }
